@@ -1,2 +1,2 @@
-# CHIP-8-Emulator
-CHIP-8 Emulator in Rust
+# CHIP-8 Interpreter
+CHIP-8 Interpreter in Rust
