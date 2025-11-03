@@ -1,6 +1,10 @@
 [package]
-name = "chip-8"
+name = "chip8"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+
+
 [dependencies]
+thiserror = "2.0.17"
