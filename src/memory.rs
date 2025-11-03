@@ -30,13 +30,13 @@ impl Memory {
             SP: 0,
         }
     }
-    pub fn load(&mut self, data: &[u8]) -> Result<bool, AppError> {
-        if data.len() <= RAM_SIZE {
+    pub fn load(&mut self, rom: &[u8]) -> Result<bool, AppError> {
+        if rom.len() <= RAM_SIZE {
             return Err(AppError::MemoryOverflow);
         }
         let start = START_ADDR as usize;
-        let end = START_ADDR as usize + data.len();
-        self.RAM[start..end].copy_from_slice(data);
+        let end = START_ADDR as usize + rom.len();
+        self.RAM[start..end].copy_from_slice(rom);
         Ok(true)
     }
     pub fn read(&self, addr: u16) -> Result<u8, AppError> {
@@ -51,5 +51,13 @@ impl Memory {
             return Ok(true);
         }
         Err(AppError::MemoryWriteError { addr, value })
+    }
+    pub fn stack_push(&mut self, addr: u16) -> Result<(), AppError> {
+        if (self.SP as usize) <= STACK_SIZE {
+            self.STACK[usize::from(self.SP)] = addr;
+            self.SP += 1;
+            return Ok(());
+        }
+        return Err(AppError::StackOverflow);
     }
 }

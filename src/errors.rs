@@ -4,8 +4,12 @@ use thiserror::Error;
 pub enum AppError {
     #[error("Memory Overflow")]
     MemoryOverflow,
-    #[error("Failed to read RAM Address: {0}")]
+    #[error("Failed to read RAM address: {0}")]
     MemoryReadError(u16),
     #[error("Failed to writing value ({value}) to RAM address ({addr})")]
     MemoryWriteError { addr: u16, value: u8 },
+    #[error("Stack Overflow")]
+    StackOverflow,
+    #[error("Unknown Opcode : {0}")]
+    UnknownOpcode(u16),
 }
