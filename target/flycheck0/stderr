@@ -1,129 +1,16 @@
-   0.216546798s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint error for chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("chip8", ["lib"], "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/lib.rs", Edition2024) }
-   0.216609239s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/chip8-e6f3a1f17895833b/lib-chip8`
-
-Caused by:
-    No such file or directory (os error 2)
-
-Stack backtrace:
-   0: std::backtrace::Backtrace::create
-   1: std::backtrace::Backtrace::capture
-   2: cargo_util::paths::read_bytes
-   3: cargo_util::paths::read
-   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
-   5: cargo::core::compiler::fingerprint::prepare_target
-   6: cargo::core::compiler::compile
-   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
-   8: cargo::ops::cargo_compile::compile_ws
-   9: cargo::ops::cargo_compile::compile_with_exec
-  10: cargo::ops::cargo_compile::compile
-  11: cargo::commands::check::exec
-  12: <cargo::cli::Exec>::exec
-  13: cargo::main
-  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
-  15: std::rt::lang_start::<()>::{closure#0}
-  16: std::rt::lang_start_internal
-  17: _main
-   0.305924154s  INFO prepare_target{force=false package_id=thiserror v2.0.17 target="thiserror"}: cargo::core::compiler::fingerprint: fingerprint error for thiserror v2.0.17/Check { test: false }/TargetInner { ..: lib_target("thiserror", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.17/src/lib.rs", Edition2021) }
-   0.305945597s  INFO prepare_target{force=false package_id=thiserror v2.0.17 target="thiserror"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/thiserror-27a47a0d54d9e018/lib-thiserror`
-
-Caused by:
-    No such file or directory (os error 2)
-
-Stack backtrace:
-   0: std::backtrace::Backtrace::create
-   1: std::backtrace::Backtrace::capture
-   2: cargo_util::paths::read_bytes
-   3: cargo_util::paths::read
-   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
-   5: cargo::core::compiler::fingerprint::prepare_target
-   6: cargo::core::compiler::compile
-   7: cargo::core::compiler::compile
-   8: <cargo::core::compiler::build_runner::BuildRunner>::compile
-   9: cargo::ops::cargo_compile::compile_ws
-  10: cargo::ops::cargo_compile::compile_with_exec
-  11: cargo::ops::cargo_compile::compile
-  12: cargo::commands::check::exec
-  13: <cargo::cli::Exec>::exec
-  14: cargo::main
-  15: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
-  16: std::rt::lang_start::<()>::{closure#0}
-  17: std::rt::lang_start_internal
-  18: _main
-   0.309577069s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint error for chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("chip8", ["lib"], "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/lib.rs", Edition2024) }
-   0.309616454s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/chip8-ee1783b427e127b7/test-lib-chip8`
-
-Caused by:
-    No such file or directory (os error 2)
-
-Stack backtrace:
-   0: std::backtrace::Backtrace::create
-   1: std::backtrace::Backtrace::capture
-   2: cargo_util::paths::read_bytes
-   3: cargo_util::paths::read
-   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
-   5: cargo::core::compiler::fingerprint::prepare_target
-   6: cargo::core::compiler::compile
-   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
-   8: cargo::ops::cargo_compile::compile_ws
-   9: cargo::ops::cargo_compile::compile_with_exec
-  10: cargo::ops::cargo_compile::compile
-  11: cargo::commands::check::exec
-  12: <cargo::cli::Exec>::exec
-  13: cargo::main
-  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
-  15: std::rt::lang_start::<()>::{closure#0}
-  16: std::rt::lang_start_internal
-  17: _main
-   0.310416209s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint error for chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)/Check { test: false }/TargetInner { name: "chip8", doc: true, ..: with_path("/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/main.rs", Edition2024) }
-   0.310444906s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/chip8-47eb043e67ccdf54/bin-chip8`
-
-Caused by:
-    No such file or directory (os error 2)
-
-Stack backtrace:
-   0: std::backtrace::Backtrace::create
-   1: std::backtrace::Backtrace::capture
-   2: cargo_util::paths::read_bytes
-   3: cargo_util::paths::read
-   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
-   5: cargo::core::compiler::fingerprint::prepare_target
-   6: cargo::core::compiler::compile
-   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
-   8: cargo::ops::cargo_compile::compile_ws
-   9: cargo::ops::cargo_compile::compile_with_exec
-  10: cargo::ops::cargo_compile::compile
-  11: cargo::commands::check::exec
-  12: <cargo::cli::Exec>::exec
-  13: cargo::main
-  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
-  15: std::rt::lang_start::<()>::{closure#0}
-  16: std::rt::lang_start_internal
-  17: _main
-   0.310965294s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint error for chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)/Check { test: true }/TargetInner { name: "chip8", doc: true, ..: with_path("/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/main.rs", Edition2024) }
-   0.310979574s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/chip8-35598acf09dc60ac/test-bin-chip8`
-
-Caused by:
-    No such file or directory (os error 2)
-
-Stack backtrace:
-   0: std::backtrace::Backtrace::create
-   1: std::backtrace::Backtrace::capture
-   2: cargo_util::paths::read_bytes
-   3: cargo_util::paths::read
-   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
-   5: cargo::core::compiler::fingerprint::prepare_target
-   6: cargo::core::compiler::compile
-   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
-   8: cargo::ops::cargo_compile::compile_ws
-   9: cargo::ops::cargo_compile::compile_with_exec
-  10: cargo::ops::cargo_compile::compile
-  11: cargo::commands::check::exec
-  12: <cargo::cli::Exec>::exec
-  13: cargo::main
-  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
-  15: std::rt::lang_start::<()>::{closure#0}
-  16: std::rt::lang_start_internal
-  17: _main
-    Checking thiserror v2.0.17
+   0.186433379s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: stale: changed "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/opcodes.rs"
+   0.186474639s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:           (vs) "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/chip8-e6f3a1f17895833b/dep-lib-chip8"
+   0.186480918s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 1762233770, nanos: 321001983 } < FileTime { seconds: 1762233771, nanos: 163197604 }
+   0.186594696s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint dirty for chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("chip8", ["lib"], "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/lib.rs", Edition2024) }
+   0.186627660s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleItem(ChangedFile { reference: "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/chip8-e6f3a1f17895833b/dep-lib-chip8", reference_mtime: FileTime { seconds: 1762233770, nanos: 321001983 }, stale: "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/opcodes.rs", stale_mtime: FileTime { seconds: 1762233771, nanos: 163197604 } }))
+   0.188416471s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: stale: changed "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/opcodes.rs"
+   0.188430882s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:           (vs) "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/chip8-ee1783b427e127b7/dep-test-lib-chip8"
+   0.188445503s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 1762233770, nanos: 321006220 } < FileTime { seconds: 1762233771, nanos: 163197604 }
+   0.188530485s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint dirty for chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("chip8", ["lib"], "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/lib.rs", Edition2024) }
+   0.188558348s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleItem(ChangedFile { reference: "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/chip8-ee1783b427e127b7/dep-test-lib-chip8", reference_mtime: FileTime { seconds: 1762233770, nanos: 321006220 }, stale: "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/opcodes.rs", stale_mtime: FileTime { seconds: 1762233771, nanos: 163197604 } }))
+   0.189146558s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint dirty for chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)/Check { test: false }/TargetInner { name: "chip8", doc: true, ..: with_path("/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/main.rs", Edition2024) }
+   0.189171622s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDepFingerprint { name: "chip8" })
+   0.189645677s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint dirty for chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)/Check { test: true }/TargetInner { name: "chip8", doc: true, ..: with_path("/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/main.rs", Edition2024) }
+   0.189668447s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDepFingerprint { name: "chip8" })
     Checking chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.79s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.46s

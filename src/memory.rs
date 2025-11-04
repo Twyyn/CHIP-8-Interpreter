@@ -1,4 +1,4 @@
-use crate::errors::AppError;
+use crate::errors::MemoryError;
 
 const RAM_SIZE: usize = 4096;
 const STACK_SIZE: usize = 16;
@@ -30,34 +30,34 @@ impl Memory {
             SP: 0,
         }
     }
-    pub fn load(&mut self, rom: &[u8]) -> Result<bool, AppError> {
+    pub fn load(&mut self, rom: &[u8]) -> Result<bool, MemoryError> {
         if rom.len() <= RAM_SIZE {
-            return Err(AppError::MemoryOverflow);
+            return Err(MemoryError::MemoryOverflow);
         }
         let start = START_ADDR as usize;
         let end = START_ADDR as usize + rom.len();
         self.RAM[start..end].copy_from_slice(rom);
         Ok(true)
     }
-    pub fn read(&self, addr: u16) -> Result<u8, AppError> {
+    pub fn read(&self, addr: u16) -> Result<u8, MemoryError> {
         if usize::from(addr) > RAM_SIZE - 1 {
             return Ok(self.RAM[usize::from(addr)]);
         }
-        return Err(AppError::MemoryReadError(addr));
+        return Err(MemoryError::MemoryReadError(addr));
     }
-    pub fn write(&mut self, addr: u16, value: u8) -> Result<bool, AppError> {
+    pub fn write(&mut self, addr: u16, value: u8) -> Result<bool, MemoryError> {
         if usize::from(addr) > RAM_SIZE - 1 {
             self.RAM[usize::from(addr)] = value;
             return Ok(true);
         }
-        Err(AppError::MemoryWriteError { addr, value })
+        Err(MemoryError::MemoryWriteError { addr, value })
     }
-    pub fn stack_push(&mut self, addr: u16) -> Result<(), AppError> {
+    pub fn stack_push(&mut self, addr: u16) -> Result<(), MemoryError> {
         if (self.SP as usize) <= STACK_SIZE {
             self.STACK[usize::from(self.SP)] = addr;
             self.SP += 1;
             return Ok(());
         }
-        return Err(AppError::StackOverflow);
+        return Err(MemoryError::StackOverflow);
     }
 }
