@@ -15,4 +15,6 @@ pub enum MemoryError {
 pub enum OpCodeError {
     #[error("Unknown Opcode : {0}")]
     UnknownOpcode(u16),
+    #[error("Bad X,Y : {0}")]
+    BadXYTail(u16),
 }

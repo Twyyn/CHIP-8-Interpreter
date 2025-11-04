@@ -70,17 +70,74 @@ pub enum OpCode {
     DUMP { x: u8 },
     //FX65 - [V0] .. [Vx] = [I]..[Ix],  [I] = [I] + X + 1
     REG_LOAD { x: u8 },
+    //Opcode Unkown,
+    OpCodeError { op: u16 },
 }
 impl TryFrom<u16> for OpCode {
     type Error = OpCodeError;
-    fn try_from(word: u16) -> Result<Self, Self::Error> {
-        let (op, n, nn, nnn) = (
-            ((word >> 12) & 0xF) as u8,
-            (word & 0xF) as u8,
-            ((word & 0xFF) & 0xF) as u8,
-            word & 0x0FFF,
-        );
-        let (x, y) = (((word >> 8) & 0xF) as u8, ((word >> 4) & 0xF) as u8);
-        todo!()
+    fn try_from(op: u16) -> Result<Self, Self::Error> {
+        let (nnn, nn, n) = (op & 0x0FFF, (op & 0x00FF) as u8, (op & 0x000F) as u8);
+        let (x, y) = (((op >> 8) & 0x000F) as u8, ((op >> 4) & 0x000F) as u8);
+
+        let decoded = match op & 0xF000 {
+            0x0000 => match op {
+                0x00E0 => OpCode::CLS,
+                0x00EE => OpCode::RETURN,
+                _ => unimplemented!("{}", OpCodeError::UnknownOpcode(op)),
+            },
+            0x1000 => OpCode::JMP { addr: nnn },
+            0x2000 => OpCode::CALL { addr: nnn },
+            0x3000 => OpCode::VSKIP_NN { x, nn },
+            0x4000 => OpCode::VSKIPN_NN { x, nn },
+            0x5000 => {
+                if n != 0 {
+                    return Err(OpCodeError::UnknownOpcode(op));
+                }
+                OpCode::VSKIP_Y { x, y }
+            }
+            0x6000 => OpCode::VLOAD_NN { x, nn },
+            0x7000 => OpCode::VADD_NN { x, nn },
+            0x8000 => match n {
+                0x0 => OpCode::YLOAD_X { x, y },
+                0x1 => OpCode::XSET_OR_Y { x, y },
+                0x2 => OpCode::XSET_AND_Y { x, y },
+                0x3 => OpCode::XSET_XOR_Y { x, y },
+                0x4 => OpCode::XADD_Y { x, y },
+                0x5 => OpCode::XSUB_Y { x, y },
+                0x6 => OpCode::XSHR_Y { x, y },
+                0x7 => OpCode::XSUB_XY { x, y },
+                0xE => OpCode::XSET_SHL_Y { x, y },
+                _ => return Err(OpCodeError::UnknownOpcode(op)),
+            },
+            0x9000 => {
+                if n != 0 {
+                    return Err(OpCodeError::UnknownOpcode(op));
+                }
+                OpCode::SKIPX_N_Y { x, y }
+            }
+            0xA000 => OpCode::LOADI { addr: nnn },
+            0xB000 => OpCode::JUMP_V0 { addr: nnn },
+            0xC000 => OpCode::RAND { x, nn },
+            0xD000 => OpCode::DRAW { x, y, n },
+            0xE000 => match nn {
+                0x9E => OpCode::XSKIP_KP { x },
+                0xA1 => OpCode::X_SKIP_KNP { x },
+                _ => return Err(OpCodeError::UnknownOpcode(op)),
+            },
+            0xF000 => match nn {
+                0x07 => OpCode::VLOAD_DT { x },
+                0x0A => OpCode::VLOAD_KP { x },
+                0x15 => OpCode::DTLOAD_V { x },
+                0x18 => OpCode::STLOAD_V { x },
+                0x1E => OpCode::IADD_V { x },
+                0x29 => OpCode::FONT { x },
+                0x33 => OpCode::BCD { x },
+                0x55 => OpCode::DUMP { x },
+                0x65 => OpCode::REG_LOAD { x },
+                _ => return Err(OpCodeError::UnknownOpcode(op)),
+            },
+            _ => return Err(OpCodeError::UnknownOpcode(op)),
+        };
+        Ok(decoded)
     }
 }
