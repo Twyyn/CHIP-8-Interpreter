@@ -14,9 +14,13 @@ struct App {
 
 impl ApplicationHandler for App {
     fn resumed(&mut self, elwt: &ActiveEventLoop) {
+        let scale = 15u32;
         let attrs: WindowAttributes = Window::default_attributes()
             .with_title("CHIP-8")
-            .with_inner_size(PhysicalSize::new(DISPLAY_HEIGHT, DISPLAY_WIDTH));
+            .with_inner_size(PhysicalSize::new(
+                DISPLAY_HEIGHT * scale,
+                DISPLAY_WIDTH * scale,
+            ));
         let window = elwt.create_window(attrs).unwrap();
         self.window = Some(window);
     }
