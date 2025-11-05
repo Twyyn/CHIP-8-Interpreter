@@ -38,7 +38,7 @@ impl CPU {
             }
             Opcode::XLOAD_NN { x, nn } => self.memory.RAM[x as usize] = nn,
             Opcode::XADD_NN { x, nn } => {
-                self.memory.RAM[x as usize] = self.memory.RAM[x as usize] + nn
+                self.memory.RAM[x as usize] = self.memory.RAM[x as usize].wrapping_add(nn)
             }
             Opcode::YLOAD_X { x, y } => self.memory.RAM[x as usize] = self.memory.RAM[y as usize],
         };
