@@ -12,7 +12,7 @@ pub enum MemoryError {
     StackOverflow,
 }
 #[derive(Error, Debug)]
-pub enum OpCodeError {
+pub enum OpcodeError {
     #[error("Unknown Opcode : {0}")]
     UnknownOpcode(u16),
     #[error("Bad X,Y : {0}")]
