@@ -1,12 +1,503 @@
-   0.086554400s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: stale: changed "C:\\Users\\bayba\\Documents\\GitHub\\CHIP-8-Interpreter\\src\\main.rs"
-   0.086569900s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:           (vs) "C:\\Users\\bayba\\Documents\\GitHub\\CHIP-8-Interpreter\\target\\debug\\.fingerprint\\chip8-f8c35730e306239e\\dep-bin-chip8"
-   0.086574000s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 13406808079, nanos: 26059800 } < FileTime { seconds: 13406808092, nanos: 520761100 }
-   0.086731200s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint dirty for chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter)/Check { test: false }/TargetInner { name: "chip8", doc: true, ..: with_path("C:\\Users\\bayba\\Documents\\GitHub\\CHIP-8-Interpreter\\src\\main.rs", Edition2024) }
-   0.086743300s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleItem(ChangedFile { reference: "C:\\Users\\bayba\\Documents\\GitHub\\CHIP-8-Interpreter\\target\\debug\\.fingerprint\\chip8-f8c35730e306239e\\dep-bin-chip8", reference_mtime: FileTime { seconds: 13406808079, nanos: 26059800 }, stale: "C:\\Users\\bayba\\Documents\\GitHub\\CHIP-8-Interpreter\\src\\main.rs", stale_mtime: FileTime { seconds: 13406808092, nanos: 520761100 } }))
-   0.087442400s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: stale: changed "C:\\Users\\bayba\\Documents\\GitHub\\CHIP-8-Interpreter\\src\\main.rs"
-   0.087450100s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:           (vs) "C:\\Users\\bayba\\Documents\\GitHub\\CHIP-8-Interpreter\\target\\debug\\.fingerprint\\chip8-e3ae15b122145c74\\dep-test-bin-chip8"
-   0.087453400s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 13406808079, nanos: 26059800 } < FileTime { seconds: 13406808092, nanos: 520761100 }
-   0.087594500s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint dirty for chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter)/Check { test: true }/TargetInner { name: "chip8", doc: true, ..: with_path("C:\\Users\\bayba\\Documents\\GitHub\\CHIP-8-Interpreter\\src\\main.rs", Edition2024) }
-   0.087604100s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleItem(ChangedFile { reference: "C:\\Users\\bayba\\Documents\\GitHub\\CHIP-8-Interpreter\\target\\debug\\.fingerprint\\chip8-e3ae15b122145c74\\dep-test-bin-chip8", reference_mtime: FileTime { seconds: 13406808079, nanos: 26059800 }, stale: "C:\\Users\\bayba\\Documents\\GitHub\\CHIP-8-Interpreter\\src\\main.rs", stale_mtime: FileTime { seconds: 13406808092, nanos: 520761100 } }))
-    Checking chip8 v0.1.0 (C:\Users\bayba\Documents\GitHub\CHIP-8-Interpreter)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.17s
+   0.443877005s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: dependency on `build_script_build` is newer than we are 1762414465.817149392s > 1762222568.213026959s "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.17"
+   0.444064643s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: dependency on `build_script_build` is newer than we are 1762414465.658840710s > 1762222568.212966179s "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.103"
+   0.444469516s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: dependency on `build_script_build` is newer than we are 1762414465.742148987s > 1762222568.213426393s "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.41"
+   0.448414234s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint error for chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("chip8", ["lib"], "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/lib.rs", Edition2024) }
+   0.448458522s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/chip8-0c6432b2fe79c07b/lib-chip8`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: std::rt::lang_start_internal
+  17: _main
+   0.459009498s  INFO prepare_target{force=false package_id=thiserror v2.0.17 target="thiserror"}: cargo::core::compiler::fingerprint: fingerprint error for thiserror v2.0.17/Check { test: false }/TargetInner { ..: lib_target("thiserror", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.17/src/lib.rs", Edition2021) }
+   0.459044502s  INFO prepare_target{force=false package_id=thiserror v2.0.17 target="thiserror"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/thiserror-cd05c2abe8079562/lib-thiserror`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   9: cargo::ops::cargo_compile::compile_ws
+  10: cargo::ops::cargo_compile::compile_with_exec
+  11: cargo::ops::cargo_compile::compile
+  12: cargo::commands::check::exec
+  13: <cargo::cli::Exec>::exec
+  14: cargo::main
+  15: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  16: std::rt::lang_start::<()>::{closure#0}
+  17: std::rt::lang_start_internal
+  18: _main
+   0.459869439s  INFO prepare_target{force=false package_id=thiserror v2.0.17 target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint dirty for thiserror v2.0.17/RunCustomBuild/TargetInner { ..: custom_build_target("build-script-build", "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.17/build.rs", Edition2021) }
+   0.459896447s  INFO prepare_target{force=false package_id=thiserror v2.0.17 target="build-script-build"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDependency { name: "build_script_build", dep_mtime: FileTime { seconds: 1762414465, nanos: 817149392 }, max_mtime: FileTime { seconds: 1762222568, nanos: 213026959 } })
+   0.460198916s  INFO prepare_target{force=false package_id=thiserror-impl v2.0.17 target="thiserror_impl"}: cargo::core::compiler::fingerprint: fingerprint error for thiserror-impl v2.0.17/Build/TargetInner { for_host: true, proc_macro: true, ..: lib_target("thiserror_impl", ["proc-macro"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-impl-2.0.17/src/lib.rs", Edition2021) }
+   0.460223763s  INFO prepare_target{force=false package_id=thiserror-impl v2.0.17 target="thiserror_impl"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/thiserror-impl-d8e73bf9216891e3/lib-thiserror_impl`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  10: cargo::ops::cargo_compile::compile_ws
+  11: cargo::ops::cargo_compile::compile_with_exec
+  12: cargo::ops::cargo_compile::compile
+  13: cargo::commands::check::exec
+  14: <cargo::cli::Exec>::exec
+  15: cargo::main
+  16: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  17: std::rt::lang_start::<()>::{closure#0}
+  18: std::rt::lang_start_internal
+  19: _main
+   0.460872377s  INFO prepare_target{force=false package_id=proc-macro2 v1.0.103 target="proc_macro2"}: cargo::core::compiler::fingerprint: fingerprint dirty for proc-macro2 v1.0.103/Build/TargetInner { ..: lib_target("proc_macro2", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.103/src/lib.rs", Edition2021) }
+   0.460897977s  INFO prepare_target{force=false package_id=proc-macro2 v1.0.103 target="proc_macro2"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDepFingerprint { name: "build_script_build" })
+   0.461733134s  INFO prepare_target{force=false package_id=proc-macro2 v1.0.103 target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint dirty for proc-macro2 v1.0.103/RunCustomBuild/TargetInner { ..: custom_build_target("build-script-build", "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.103/build.rs", Edition2021) }
+   0.461764259s  INFO prepare_target{force=false package_id=proc-macro2 v1.0.103 target="build-script-build"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDependency { name: "build_script_build", dep_mtime: FileTime { seconds: 1762414465, nanos: 658840710 }, max_mtime: FileTime { seconds: 1762222568, nanos: 212966179 } })
+   0.462083918s  INFO prepare_target{force=false package_id=quote v1.0.41 target="quote"}: cargo::core::compiler::fingerprint: fingerprint dirty for quote v1.0.41/Build/TargetInner { ..: lib_target("quote", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.41/src/lib.rs", Edition2018) }
+   0.462101215s  INFO prepare_target{force=false package_id=quote v1.0.41 target="quote"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDepFingerprint { name: "build_script_build" })
+   0.462555050s  INFO prepare_target{force=false package_id=quote v1.0.41 target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint dirty for quote v1.0.41/RunCustomBuild/TargetInner { ..: custom_build_target("build-script-build", "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.41/build.rs", Edition2018) }
+   0.462574276s  INFO prepare_target{force=false package_id=quote v1.0.41 target="build-script-build"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDependency { name: "build_script_build", dep_mtime: FileTime { seconds: 1762414465, nanos: 742148987 }, max_mtime: FileTime { seconds: 1762222568, nanos: 213426393 } })
+   0.462762942s  INFO prepare_target{force=false package_id=syn v2.0.108 target="syn"}: cargo::core::compiler::fingerprint: fingerprint error for syn v2.0.108/Build/TargetInner { ..: lib_target("syn", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.108/src/lib.rs", Edition2021) }
+   0.462778819s  INFO prepare_target{force=false package_id=syn v2.0.108 target="syn"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/syn-5d079a55e3134b99/lib-syn`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::compile
+  10: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  11: cargo::ops::cargo_compile::compile_ws
+  12: cargo::ops::cargo_compile::compile_with_exec
+  13: cargo::ops::cargo_compile::compile
+  14: cargo::commands::check::exec
+  15: <cargo::cli::Exec>::exec
+  16: cargo::main
+  17: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  18: std::rt::lang_start::<()>::{closure#0}
+  19: std::rt::lang_start_internal
+  20: _main
+   0.463216250s  INFO prepare_target{force=false package_id=winit v0.30.12 target="winit"}: cargo::core::compiler::fingerprint: fingerprint error for winit v0.30.12/Check { test: false }/TargetInner { ..: lib_target("winit", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/winit-0.30.12/src/lib.rs", Edition2021) }
+   0.463235875s  INFO prepare_target{force=false package_id=winit v0.30.12 target="winit"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/winit-16887742228cce35/lib-winit`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   9: cargo::ops::cargo_compile::compile_ws
+  10: cargo::ops::cargo_compile::compile_with_exec
+  11: cargo::ops::cargo_compile::compile
+  12: cargo::commands::check::exec
+  13: <cargo::cli::Exec>::exec
+  14: cargo::main
+  15: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  16: std::rt::lang_start::<()>::{closure#0}
+  17: std::rt::lang_start_internal
+  18: _main
+   0.464120218s  INFO prepare_target{force=false package_id=block2 v0.5.1 target="block2"}: cargo::core::compiler::fingerprint: fingerprint error for block2 v0.5.1/Check { test: false }/TargetInner { ..: lib_target("block2", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/block2-0.5.1/src/lib.rs", Edition2021) }
+   0.464145756s  INFO prepare_target{force=false package_id=block2 v0.5.1 target="block2"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/block2-daf7d380bb5fc21e/lib-block2`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  10: cargo::ops::cargo_compile::compile_ws
+  11: cargo::ops::cargo_compile::compile_with_exec
+  12: cargo::ops::cargo_compile::compile
+  13: cargo::commands::check::exec
+  14: <cargo::cli::Exec>::exec
+  15: cargo::main
+  16: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  17: std::rt::lang_start::<()>::{closure#0}
+  18: std::rt::lang_start_internal
+  19: _main
+   0.464615890s  INFO prepare_target{force=false package_id=objc2 v0.5.2 target="objc2"}: cargo::core::compiler::fingerprint: fingerprint error for objc2 v0.5.2/Check { test: false }/TargetInner { ..: lib_target("objc2", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-0.5.2/src/lib.rs", Edition2021) }
+   0.464644514s  INFO prepare_target{force=false package_id=objc2 v0.5.2 target="objc2"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/objc2-8e10bd96adba58f6/lib-objc2`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::compile
+  10: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  11: cargo::ops::cargo_compile::compile_ws
+  12: cargo::ops::cargo_compile::compile_with_exec
+  13: cargo::ops::cargo_compile::compile
+  14: cargo::commands::check::exec
+  15: <cargo::cli::Exec>::exec
+  16: cargo::main
+  17: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  18: std::rt::lang_start::<()>::{closure#0}
+  19: std::rt::lang_start_internal
+  20: _main
+   0.465965285s  INFO prepare_target{force=false package_id=core-foundation v0.9.4 target="core_foundation"}: cargo::core::compiler::fingerprint: fingerprint error for core-foundation v0.9.4/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("core_foundation", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/core-foundation-0.9.4/src/lib.rs", Edition2018) }
+   0.466003405s  INFO prepare_target{force=false package_id=core-foundation v0.9.4 target="core_foundation"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/core-foundation-37d98ca55d632ca4/lib-core_foundation`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  10: cargo::ops::cargo_compile::compile_ws
+  11: cargo::ops::cargo_compile::compile_with_exec
+  12: cargo::ops::cargo_compile::compile
+  13: cargo::commands::check::exec
+  14: <cargo::cli::Exec>::exec
+  15: cargo::main
+  16: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  17: std::rt::lang_start::<()>::{closure#0}
+  18: std::rt::lang_start_internal
+  19: _main
+   0.467394954s  INFO prepare_target{force=false package_id=core-graphics v0.23.2 target="core_graphics"}: cargo::core::compiler::fingerprint: fingerprint error for core-graphics v0.23.2/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("core_graphics", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/core-graphics-0.23.2/src/lib.rs", Edition2018) }
+   0.467430365s  INFO prepare_target{force=false package_id=core-graphics v0.23.2 target="core_graphics"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/core-graphics-9e46f29b5da384a8/lib-core_graphics`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  10: cargo::ops::cargo_compile::compile_ws
+  11: cargo::ops::cargo_compile::compile_with_exec
+  12: cargo::ops::cargo_compile::compile
+  13: cargo::commands::check::exec
+  14: <cargo::cli::Exec>::exec
+  15: cargo::main
+  16: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  17: std::rt::lang_start::<()>::{closure#0}
+  18: std::rt::lang_start_internal
+  19: _main
+   0.468277735s  INFO prepare_target{force=false package_id=core-graphics-types v0.1.3 target="core_graphics_types"}: cargo::core::compiler::fingerprint: fingerprint error for core-graphics-types v0.1.3/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("core_graphics_types", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/core-graphics-types-0.1.3/src/lib.rs", Edition2018) }
+   0.468305932s  INFO prepare_target{force=false package_id=core-graphics-types v0.1.3 target="core_graphics_types"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/core-graphics-types-b2c133bafb7831b5/lib-core_graphics_types`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::compile
+  10: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  11: cargo::ops::cargo_compile::compile_ws
+  12: cargo::ops::cargo_compile::compile_with_exec
+  13: cargo::ops::cargo_compile::compile
+  14: cargo::commands::check::exec
+  15: <cargo::cli::Exec>::exec
+  16: cargo::main
+  17: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  18: std::rt::lang_start::<()>::{closure#0}
+  19: std::rt::lang_start_internal
+  20: _main
+   0.468881416s  INFO prepare_target{force=false package_id=foreign-types v0.5.0 target="foreign_types"}: cargo::core::compiler::fingerprint: fingerprint error for foreign-types v0.5.0/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("foreign_types", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foreign-types-0.5.0/src/lib.rs", Edition2018) }
+   0.468907810s  INFO prepare_target{force=false package_id=foreign-types v0.5.0 target="foreign_types"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/foreign-types-5d266f8bbdcafe42/lib-foreign_types`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::compile
+  10: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  11: cargo::ops::cargo_compile::compile_ws
+  12: cargo::ops::cargo_compile::compile_with_exec
+  13: cargo::ops::cargo_compile::compile
+  14: cargo::commands::check::exec
+  15: <cargo::cli::Exec>::exec
+  16: cargo::main
+  17: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  18: std::rt::lang_start::<()>::{closure#0}
+  19: std::rt::lang_start_internal
+  20: _main
+   0.469408249s  INFO prepare_target{force=false package_id=foreign-types-macros v0.2.3 target="foreign_types_macros"}: cargo::core::compiler::fingerprint: fingerprint error for foreign-types-macros v0.2.3/Build/TargetInner { name_inferred: true, for_host: true, proc_macro: true, ..: lib_target("foreign_types_macros", ["proc-macro"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foreign-types-macros-0.2.3/src/lib.rs", Edition2018) }
+   0.469433934s  INFO prepare_target{force=false package_id=foreign-types-macros v0.2.3 target="foreign_types_macros"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/foreign-types-macros-077489d86aaeb1f1/lib-foreign_types_macros`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::compile
+  10: cargo::core::compiler::compile
+  11: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  12: cargo::ops::cargo_compile::compile_ws
+  13: cargo::ops::cargo_compile::compile_with_exec
+  14: cargo::ops::cargo_compile::compile
+  15: cargo::commands::check::exec
+  16: <cargo::cli::Exec>::exec
+  17: cargo::main
+  18: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  19: std::rt::lang_start::<()>::{closure#0}
+  20: std::rt::lang_start_internal
+  21: _main
+   0.470250565s  INFO prepare_target{force=false package_id=objc2-app-kit v0.2.2 target="objc2_app_kit"}: cargo::core::compiler::fingerprint: fingerprint error for objc2-app-kit v0.2.2/Check { test: false }/TargetInner { ..: lib_target("objc2_app_kit", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-app-kit-0.2.2/src/lib.rs", Edition2021) }
+   0.470278034s  INFO prepare_target{force=false package_id=objc2-app-kit v0.2.2 target="objc2_app_kit"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/objc2-app-kit-704f9778b4e88371/lib-objc2_app_kit`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  10: cargo::ops::cargo_compile::compile_ws
+  11: cargo::ops::cargo_compile::compile_with_exec
+  12: cargo::ops::cargo_compile::compile
+  13: cargo::commands::check::exec
+  14: <cargo::cli::Exec>::exec
+  15: cargo::main
+  16: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  17: std::rt::lang_start::<()>::{closure#0}
+  18: std::rt::lang_start_internal
+  19: _main
+   0.470936493s  INFO prepare_target{force=false package_id=objc2-foundation v0.2.2 target="objc2_foundation"}: cargo::core::compiler::fingerprint: fingerprint error for objc2-foundation v0.2.2/Check { test: false }/TargetInner { ..: lib_target("objc2_foundation", ["lib"], "/Users/jarrett/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-foundation-0.2.2/src/lib.rs", Edition2021) }
+   0.470965299s  INFO prepare_target{force=false package_id=objc2-foundation v0.2.2 target="objc2_foundation"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/objc2-foundation-e303cda5abe12da1/lib-objc2_foundation`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::compile
+  10: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  11: cargo::ops::cargo_compile::compile_ws
+  12: cargo::ops::cargo_compile::compile_with_exec
+  13: cargo::ops::cargo_compile::compile
+  14: cargo::commands::check::exec
+  15: <cargo::cli::Exec>::exec
+  16: cargo::main
+  17: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  18: std::rt::lang_start::<()>::{closure#0}
+  19: std::rt::lang_start_internal
+  20: _main
+   0.473019398s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint error for chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("chip8", ["lib"], "/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/lib.rs", Edition2024) }
+   0.473058323s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/chip8-f1499ae8274460bf/test-lib-chip8`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: std::rt::lang_start_internal
+  17: _main
+   0.473948323s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint error for chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)/Check { test: false }/TargetInner { name: "chip8", doc: true, ..: with_path("/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/main.rs", Edition2024) }
+   0.473981802s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/chip8-7d7e2bd823cff4fd/bin-chip8`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: std::rt::lang_start_internal
+  17: _main
+   0.474993779s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint: fingerprint error for chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter)/Check { test: true }/TargetInner { name: "chip8", doc: true, ..: with_path("/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/src/main.rs", Edition2024) }
+   0.475020364s  INFO prepare_target{force=false package_id=chip8 v0.1.0 (/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter) target="chip8"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/.fingerprint/chip8-cee741da18f054e8/test-bin-chip8`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: std::rt::lang_start_internal
+  17: _main
+   Compiling proc-macro2 v1.0.103
+   Compiling quote v1.0.41
+error: failed to run custom build command for `proc-macro2 v1.0.103`
+note: To improve backtraces for build dependencies, set the CARGO_PROFILE_DEV_BUILD_OVERRIDE_DEBUG=true environment variable to enable debug information generation.
+
+Caused by:
+  could not execute process `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/build/proc-macro2-359540f43aa45599/build-script-build` (never executed)
+
+Caused by:
+  Permission denied (os error 13)
+warning: build failed, waiting for other jobs to finish...
+    Checking objc2 v0.5.2
+    Checking core-foundation v0.9.4
+error: failed to run custom build command for `quote v1.0.41`
+note: To improve backtraces for build dependencies, set the CARGO_PROFILE_DEV_BUILD_OVERRIDE_DEBUG=true environment variable to enable debug information generation.
+
+Caused by:
+  could not execute process `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/build/quote-4bb3576ca4bdee67/build-script-build` (never executed)
+
+Caused by:
+  Permission denied (os error 13)
+   Compiling thiserror v2.0.17
+error: failed to run custom build command for `thiserror v2.0.17`
+note: To improve backtraces for build dependencies, set the CARGO_PROFILE_DEV_BUILD_OVERRIDE_DEBUG=true environment variable to enable debug information generation.
+
+Caused by:
+  could not execute process `/Users/jarrett/Documents/GitHub/CHIP-8-Interpreter/target/debug/build/thiserror-000fbf171522403e/build-script-build` (never executed)
+
+Caused by:
+  Permission denied (os error 13)
+    Checking core-graphics-types v0.1.3
+    Checking block2 v0.5.1
+    Checking objc2-foundation v0.2.2
+    Checking objc2-app-kit v0.2.2
