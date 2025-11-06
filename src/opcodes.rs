@@ -3,7 +3,7 @@ use crate::errors::OpcodeError;
 #[allow(non_camel_case_types)]
 pub enum Opcode {
     //00E0 - Clear Screen
-    CLS,
+    CLEAR,
     //00EE - Return from a subroutine
     RETURN,
     //1NNN - Jump, PC = NNN
@@ -17,11 +17,11 @@ pub enum Opcode {
     //5XY0 - Skip if RAM[Vx] == RAM[Vy]
     SE_Vx_Vy { x: u8, y: u8 },
     //6XNN - RAM[Vx] = NN
-    LD_Vx_NN { x: u8, nn: u8 },
+    LOAD_Vx_NN { x: u8, nn: u8 },
     //7XNN - RAM[Vx] += NN
     ADD_Vx_NN { x: u8, nn: u8 },
     //8XY0 - RAM[Vy] = RAM[Vx]
-    LD_Vx_Vy { x: u8, y: u8 },
+    LOAD_Vx_Vy { x: u8, y: u8 },
     //8XY1 - RAM[Vx] = RAM[Vx] OR RAM[Xy]
     OR_Vx_Vy { x: u8, y: u8 },
     //8XY2 - RAM[Vx] = RAM[Vx] AND RAM[Xy]
@@ -89,38 +89,40 @@ impl TryFrom<u16> for Opcode {
             (op & 0x0FFF) as u16,
         );
         let op = match (op, x, y, n) {
-            (0x0, 0x0, 0xE, 0x0) => Opcode::CLS,
+            (0x0, 0x0, 0xE, 0x0) => Opcode::CLEAR,
             (0x0, 0x0, 0xE, 0xE) => Opcode::RETURN,
-            (0x1, _, _, _) => Opcode::JMP { nnn },
+            (0x1, _, _, _) => Opcode::JUMP { nnn },
             (0x2, _, _, _) => Opcode::CALL { nnn },
-            (0x3, _, _, _) => Opcode::XSKIP_NN { x, nn },
-            (0x4, _, _, _) => Opcode::XSKIPN_NN { x, nn },
-            (0x5, _, _, 0x0) => Opcode::XSKIP_Y { x, y },
-            (0x6, _, _, _) => Opcode::XLOAD_NN { x, nn },
-            (0x7, _, _, _) => Opcode::XADD_NN { x, nn },
-            (0x8, _, _, 0x0) => Opcode::YLOAD_X { x, y },
-            (0x8, _, _, 0x1) => Opcode::XSET_OR_Y { x, y },
-            (0x8, _, _, 0x2) => Opcode::XSET_AND_Y { x, y },
-            (0x8, _, _, 0x3) => Opcode::XSET_XOR_Y { x, y },
-            (0x8, _, _, 0x4) => Opcode::XADD_Y { x, y },
-            (0x8, _, _, 0x5) => Opcode::XSUB_Y { x, y },
-            (0x8, _, _, 0x6) => Opcode::XSHR_Y { x, y },
-            (0x8, _, _, 0x7) => Opcode::XSUB_XY { x, y },
-            (0x8, _, _, 0xE) => Opcode::XSET_SHL_Y { x, y },
-            (0x9, _, _, 0x0) => Opcode::SKIPX_N_Y { x, y },
-            (0xA, _, _, _) => Opcode::LOADI { nnn },
-            (0xB, _, _, _) => Opcode::JUMP_V0 { nnn },
+            (0x3, _, _, _) => Opcode::SE_Vx_NN { x, nn },
+            (0x4, _, _, _) => Opcode::SNE_Vx_NN { x, nn },
+            (0x5, _, _, 0x0) => Opcode::SE_Vx_Vy { x, y },
+            (0x6, _, _, _) => Opcode::LOAD_Vx_NN { x, nn },
+            (0x7, _, _, _) => Opcode::ADD_Vx_NN { x, nn },
+            (0x8, _, _, 0x0) => Opcode::LOAD_Vx_Vy { x, y },
+            (0x8, _, _, 0x1) => Opcode::OR_Vx_Vy { x, y },
+            (0x8, _, _, 0x2) => Opcode::OR_Vx_Vy { x, y },
+            (0x8, _, _, 0x3) => Opcode::XOR_Vx_Vy { x, y },
+            (0x8, _, _, 0x4) => Opcode::ADD_Vx_Vy { x, y },
+            (0x8, _, _, 0x5) => Opcode::SUB_Vx_Vy { x, y },
+            (0x8, _, _, 0x6) => Opcode::SHR_Vx_Vy { x, y },
+            (0x8, _, _, 0x7) => Opcode::SUBN_Vx_Vy { x, y },
+            (0x8, _, _, 0xE) => Opcode::SHL_Vx_Vy { x, y },
+            (0x9, _, _, 0x0) => Opcode::SNE_Vx_Vy { x, y },
+            (0xA, _, _, _) => Opcode::LOAD_I_NNN { nnn },
+            (0xB, _, _, _) => Opcode::JUMP_V0_NNN { nnn },
             (0xC, _, _, _) => Opcode::RAND { x, nn },
             (0xD, _, _, _) => Opcode::DRAW { x, y, n },
-            (0xE, _, 0x9, 0xE) => Opcode::XSKIP_KP { x },
-            (0xE, _, 0xA, 0x1) => Opcode::X_SKIP_KNP { x },
-            (0xF, _, 0x0, 0x7) => Opcode::XLOAD_DT { x },
-            (0xF, _, 0x0, 0xA) => Opcode::XLOAD_KP { x },
-            (0xF, _, 0x1, 0xE) => Opcode::IADD_X { x },
-            (0xF, _, 0x2, 0x9) => Opcode::FONT { x },
-            (0xF, _, 0x3, 0x3) => Opcode::BCD { x },
-            (0xF, _, 0x5, 0x5) => Opcode::DUMP { x },
-            (0xF, _, 0x6, 0x5) => Opcode::REG_LOAD { x },
+            (0xE, _, 0x9, 0xE) => Opcode::SKP_Vx { x },
+            (0xE, _, 0xA, 0x1) => Opcode::SKNP_Vx { x },
+            (0xF, _, 0x0, 0x7) => Opcode::LOAD_Vx_DT { x },
+            (0xF, _, 0x0, 0xA) => Opcode::LOAD_Vx_K { x },
+            (0xF, _, 0x1, 0x5) => Opcode::LOAD_DT_Vx { x },
+            (0xF, _, 0x1, 0x8) => Opcode::LOAD_ST_Vx { x },
+            (0xF, _, 0x1, 0xE) => Opcode::ADD_I_Vx { x },
+            (0xF, _, 0x2, 0x9) => Opcode::LOAD_FONT { x },
+            (0xF, _, 0x3, 0x3) => Opcode::LOAD_B_Vx { x },
+            (0xF, _, 0x5, 0x5) => Opcode::LOAD_I_Vx { x },
+            (0xF, _, 0x6, 0x5) => Opcode::LOAD_Vx_I { x },
             (_, _, _, _) => return Err(OpcodeError::UnknownOpcode(instr)),
         };
         Ok(op)
