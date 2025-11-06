@@ -18,3 +18,8 @@ pub enum OpcodeError {
     #[error("Bad X,Y : {0}")]
     BadXYTail(u16),
 }
+#[derive(Error, Debug)]
+pub enum KeyboardError {
+    #[error("Unknown KEY : {0}")]
+    UnknownKEY(usize),
+}
