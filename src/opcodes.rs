@@ -7,69 +7,69 @@ pub enum Opcode {
     //00EE - Return from a subroutine
     RETURN,
     //1NNN - Jump, PC = NNN
-    JMP { nnn: u16 },
+    JUMP { nnn: u16 },
     //2NNN - Execute subroutine starting at NNN
     CALL { nnn: u16 },
     //3XNN - Skip if RAM[Vx] == NN
-    XSKIP_NN { x: u8, nn: u8 },
+    SE_Vx_NN { x: u8, nn: u8 },
     //4XNN - Skip if RAM[Vx] != NN
-    XSKIPN_NN { x: u8, nn: u8 },
+    SNE_Vx_NN { x: u8, nn: u8 },
     //5XY0 - Skip if RAM[Vx] == RAM[Vy]
-    XSKIP_Y { x: u8, y: u8 },
+    SE_Vx_Vy { x: u8, y: u8 },
     //6XNN - RAM[Vx] = NN
-    XLOAD_NN { x: u8, nn: u8 },
+    LD_Vx_NN { x: u8, nn: u8 },
     //7XNN - RAM[Vx] += NN
-    XADD_NN { x: u8, nn: u8 },
+    ADD_Vx_NN { x: u8, nn: u8 },
     //8XY0 - RAM[Vy] = RAM[Vx]
-    YLOAD_X { x: u8, y: u8 },
+    LD_Vx_Vy { x: u8, y: u8 },
     //8XY1 - RAM[Vx] = RAM[Vx] OR RAM[Xy]
-    XSET_OR_Y { x: u8, y: u8 },
+    OR_Vx_Vy { x: u8, y: u8 },
     //8XY2 - RAM[Vx] = RAM[Vx] AND RAM[Xy]
-    XSET_AND_Y { x: u8, y: u8 },
+    AND_Vx_Vy { x: u8, y: u8 },
     //8XY3 - RAM[Vx] = RAM[Vx] XOR RAM[Xy]
-    XSET_XOR_Y { x: u8, y: u8 },
+    XOR_Vx_Vy { x: u8, y: u8 },
     //8XY4 - RAM[Vx] += RAM[Xy], Set VF
-    XADD_Y { x: u8, y: u8 },
+    ADD_Vx_Vy { x: u8, y: u8 },
     //8XY5 - RAM[Vx] -= RAM[Xy], Set VF
-    XSUB_Y { x: u8, y: u8 },
+    SUB_Vx_Vy { x: u8, y: u8 },
     //8XY6 - Set VF = LSB, RAM[Vx] = RAM[Vy] >> 1
-    XSHR_Y { x: u8, y: u8 },
+    SHR_Vx_Vy { x: u8, y: u8 },
     //8XY7 - RAM[Vx] = RAM[Vy] - RAM[Vx], Set VF
-    XSUB_XY { x: u8, y: u8 },
+    SUBN_Vx_Vy { x: u8, y: u8 },
     //8XYE - RAM[Vx] = RAM[Vy] << 1, Set VF
-    XSET_SHL_Y { x: u8, y: u8 },
+    SHL_Vx_Vy { x: u8, y: u8 },
     //9XY0 - Skip the following (PC +=2) if RAM[Vx] != RAM[Vy]
-    SKIPX_N_Y { x: u8, y: u8 },
+    SNE_Vx_Vy { x: u8, y: u8 },
     //ANNN - RAM[I] = NNN
-    LOADI { nnn: u16 },
+    LOAD_I_NNN { nnn: u16 },
     //BNNN - Jump to NNN + V0
-    JUMP_V0 { nnn: u16 },
+    JUMP_V0_NNN { nnn: u16 },
     //CVNN - RAM[Vx] = RandomNum with a mask of NN
     RAND { x: u8, nn: u8 },
     //DXYN - Draw sprite at position Vx, Vy with N bytes, starting at RAM[I], Set VF any pixels changes from 1 -> 0
     DRAW { x: u8, y: u8, n: u8 },
     //EX9E - Skip following (PC += 2) if KEY(Hex) is already = RAM[Vx]
-    XSKIP_KP { x: u8 },
+    SKP_Vx { x: u8 },
     //EXA1 - Skip following (PC += 2) if KEY(Hex) != Vx
-    X_SKIP_KNP { x: u8 },
+    SKNP_Vx { x: u8 },
     //FX07 - RAM[Vx] = [DELAY_TIMER]
-    XLOAD_DT { x: u8 },
+    LOAD_Vx_DT { x: u8 },
     //FX0A - Wait for [KEY]press, RAM[Vx] = [KEY]
-    XLOAD_KP { x: u8 },
+    LOAD_Vx_K { x: u8 },
     //FX15 - [DELAY_TIMER] = RAM[Vx]
-    DTLOAD_X { x: u8 },
+    LOAD_DT_Vx { x: u8 },
     //FX18 - [SOUND_TIMER] = RAM[Vx]
-    STLOAD_X { x: u8 },
+    LOAD_ST_Vx { x: u8 },
     //FX1E - RAM[I] += RAM[Vx]
-    IADD_X { x: u8 },
+    ADD_I_Vx { x: u8 },
     //FX29 - [I] =  VxRAM[SPRITE_DATA] ->= RAM[Vx]
-    FONT { x: u8 },
+    LOAD_FONT { x: u8 },
     //FX33 - [I], [I + 1] [I + 2]  = RAM[Vx], Decimal form
-    BCD { x: u8 },
+    LOAD_B_Vx { x: u8 },
     //FX55 - [I] ..[Ix] = RAM[V0]..RAM[Vx], [I] = I + X + 1
-    DUMP { x: u8 },
+    LOAD_I_Vx { x: u8 },
     //FX65 - [V0] .. [Vx] = [I]..[Ix],  [I] = [I] + X + 1
-    REG_LOAD { x: u8 },
+    LOAD_Vx_I { x: u8 },
     //Opcode Unknown,
     OpCodeError { op: u16 },
 }
