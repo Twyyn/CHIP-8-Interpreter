@@ -7,4 +7,3 @@ pub mod core;
 pub struct CHIP8 {
     CPU: core::CPU,
 }
-

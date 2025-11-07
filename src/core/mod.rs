@@ -3,9 +3,9 @@ pub mod display;
 pub mod errors;
 pub mod keyboard;
 pub mod memory;
-pub mod opcodes;
+pub mod mnemonics;
 
 pub use errors::*;
 pub use memory::*;
 pub use cpu::*;
-pub use opcodes::*;
+pub use mnemonics::*;

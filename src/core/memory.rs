@@ -1,4 +1,4 @@
-use crate::core::MemoryError;
+use crate::core::{MemoryError, OpcodeError};
 
 const RAM_SIZE: usize = 4096;
 const STACK_SIZE: usize = 16;
@@ -73,12 +73,20 @@ impl Memory {
         };
         Ok(())
     }
-    pub fn stack_pop(&mut self) -> u16 {
+    pub fn stack_pop(&mut self) -> Result<u16, MemoryError> {
+        if self.STACK_POINTER - 1 < 0 {
+            return Err(MemoryError::StackUnderflow);
+        }
         self.STACK_POINTER -= 1;
-        self.STACK[self.STACK_POINTER as usize]
+        Ok(self.STACK[self.STACK_POINTER as usize])
     }
-    pub fn stack_push(&mut self, value: u16) {
-        self.STACK[self.STACK_POINTER as usize] = value;
-        self.STACK_POINTER += 1;
+    pub fn stack_push(&mut self, value: u16) -> Result<(), MemoryError> {
+        if self.STACK_POINTER + 1 <= STACK_SIZE as u8 {
+            self.STACK_POINTER += 1;
+            self.STACK[self.STACK_POINTER as usize] = value;
+        } else {
+            return Err(MemoryError::StackOverflow);
+        }
+        Ok(())
     }
 }

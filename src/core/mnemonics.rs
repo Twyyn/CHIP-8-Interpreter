@@ -1,7 +1,7 @@
 use crate::core::OpcodeError;
 
 #[allow(non_camel_case_types)]
-pub enum Opcode {
+pub enum Mnemonics {
     //00E0 - Clear Screen
     CLEAR,
     //00EE - Return from a subroutine
@@ -73,7 +73,7 @@ pub enum Opcode {
     //Opcode Unknown,
     OpCodeError { op: u16 },
 }
-impl TryFrom<u16> for Opcode {
+impl TryFrom<u16> for Mnemonics {
     type Error = OpcodeError;
     fn try_from(instr: u16) -> Result<Self, Self::Error> {
         let first_byte = (instr & 0xFF00) >> 8 as u8;
@@ -89,41 +89,41 @@ impl TryFrom<u16> for Opcode {
             (op & 0x0FFF) as u16,
         );
         let op = match (op, x, y, n) {
-            (0x0, 0x0, 0xE, 0x0) => Opcode::CLEAR,
-            (0x0, 0x0, 0xE, 0xE) => Opcode::RETURN,
-            (0x1, _, _, _) => Opcode::JUMP { nnn },
-            (0x2, _, _, _) => Opcode::CALL { nnn },
-            (0x3, _, _, _) => Opcode::SE_Vx_NN { x, nn },
-            (0x4, _, _, _) => Opcode::SNE_Vx_NN { x, nn },
-            (0x5, _, _, 0x0) => Opcode::SE_Vx_Vy { x, y },
-            (0x6, _, _, _) => Opcode::LOAD_Vx_NN { x, nn },
-            (0x7, _, _, _) => Opcode::ADD_Vx_NN { x, nn },
-            (0x8, _, _, 0x0) => Opcode::LOAD_Vx_Vy { x, y },
-            (0x8, _, _, 0x1) => Opcode::OR_Vx_Vy { x, y },
-            (0x8, _, _, 0x2) => Opcode::AND_Vx_Vy { x, y },
-            (0x8, _, _, 0x3) => Opcode::XOR_Vx_Vy { x, y },
-            (0x8, _, _, 0x4) => Opcode::ADD_Vx_Vy { x, y },
-            (0x8, _, _, 0x5) => Opcode::SUB_Vx_Vy { x, y },
-            (0x8, _, _, 0x6) => Opcode::SHR_Vx_Vy { x, y },
-            (0x8, _, _, 0x7) => Opcode::SUBN_Vx_Vy { x, y },
-            (0x8, _, _, 0xE) => Opcode::SHL_Vx_Vy { x, y },
-            (0x9, _, _, 0x0) => Opcode::SNE_Vx_Vy { x, y },
-            (0xA, _, _, _) => Opcode::LOAD_I_NNN { nnn },
-            (0xB, _, _, _) => Opcode::JUMP_V0_NNN { nnn },
-            (0xC, _, _, _) => Opcode::RAND { x, nn },
-            (0xD, _, _, _) => Opcode::DRAW { x, y, n },
-            (0xE, _, 0x9, 0xE) => Opcode::SKP_Vx { x },
-            (0xE, _, 0xA, 0x1) => Opcode::SKNP_Vx { x },
-            (0xF, _, 0x0, 0x7) => Opcode::LOAD_Vx_DT { x },
-            (0xF, _, 0x0, 0xA) => Opcode::LOAD_Vx_K { x },
-            (0xF, _, 0x1, 0x5) => Opcode::LOAD_DT_Vx { x },
-            (0xF, _, 0x1, 0x8) => Opcode::LOAD_ST_Vx { x },
-            (0xF, _, 0x1, 0xE) => Opcode::ADD_I_Vx { x },
-            (0xF, _, 0x2, 0x9) => Opcode::LOAD_FONT { x },
-            (0xF, _, 0x3, 0x3) => Opcode::LOAD_B_Vx { x },
-            (0xF, _, 0x5, 0x5) => Opcode::LOAD_I_Vx { x },
-            (0xF, _, 0x6, 0x5) => Opcode::LOAD_Vx_I { x },
-            (_, _, _, _) => return Err(OpcodeError::UnknownOpcode(instr)),
+            (0x0, 0x0, 0xE, 0x0) => Mnemonics::CLEAR,
+            (0x0, 0x0, 0xE, 0xE) => Mnemonics::RETURN,
+            (0x1, _, _, _) => Mnemonics::JUMP { nnn },
+            (0x2, _, _, _) => Mnemonics::CALL { nnn },
+            (0x3, _, _, _) => Mnemonics::SE_Vx_NN { x, nn },
+            (0x4, _, _, _) => Mnemonics::SNE_Vx_NN { x, nn },
+            (0x5, _, _, 0x0) => Mnemonics::SE_Vx_Vy { x, y },
+            (0x6, _, _, _) => Mnemonics::LOAD_Vx_NN { x, nn },
+            (0x7, _, _, _) => Mnemonics::ADD_Vx_NN { x, nn },
+            (0x8, _, _, 0x0) => Mnemonics::LOAD_Vx_Vy { x, y },
+            (0x8, _, _, 0x1) => Mnemonics::OR_Vx_Vy { x, y },
+            (0x8, _, _, 0x2) => Mnemonics::AND_Vx_Vy { x, y },
+            (0x8, _, _, 0x3) => Mnemonics::XOR_Vx_Vy { x, y },
+            (0x8, _, _, 0x4) => Mnemonics::ADD_Vx_Vy { x, y },
+            (0x8, _, _, 0x5) => Mnemonics::SUB_Vx_Vy { x, y },
+            (0x8, _, _, 0x6) => Mnemonics::SHR_Vx_Vy { x, y },
+            (0x8, _, _, 0x7) => Mnemonics::SUBN_Vx_Vy { x, y },
+            (0x8, _, _, 0xE) => Mnemonics::SHL_Vx_Vy { x, y },
+            (0x9, _, _, 0x0) => Mnemonics::SNE_Vx_Vy { x, y },
+            (0xA, _, _, _) => Mnemonics::LOAD_I_NNN { nnn },
+            (0xB, _, _, _) => Mnemonics::JUMP_V0_NNN { nnn },
+            (0xC, _, _, _) => Mnemonics::RAND { x, nn },
+            (0xD, _, _, _) => Mnemonics::DRAW { x, y, n },
+            (0xE, _, 0x9, 0xE) => Mnemonics::SKP_Vx { x },
+            (0xE, _, 0xA, 0x1) => Mnemonics::SKNP_Vx { x },
+            (0xF, _, 0x0, 0x7) => Mnemonics::LOAD_Vx_DT { x },
+            (0xF, _, 0x0, 0xA) => Mnemonics::LOAD_Vx_K { x },
+            (0xF, _, 0x1, 0x5) => Mnemonics::LOAD_DT_Vx { x },
+            (0xF, _, 0x1, 0x8) => Mnemonics::LOAD_ST_Vx { x },
+            (0xF, _, 0x1, 0xE) => Mnemonics::ADD_I_Vx { x },
+            (0xF, _, 0x2, 0x9) => Mnemonics::LOAD_FONT { x },
+            (0xF, _, 0x3, 0x3) => Mnemonics::LOAD_B_Vx { x },
+            (0xF, _, 0x5, 0x5) => Mnemonics::LOAD_I_Vx { x },
+            (0xF, _, 0x6, 0x5) => Mnemonics::LOAD_Vx_I { x },
+            (_, _, _, _) => return Err(OpcodeError::UnknownMnemonic(instr)),
         };
         Ok(op)
     }

@@ -10,13 +10,15 @@ pub enum MemoryError {
     MemoryWriteError { addr: u16, value: u8 },
     #[error("Stack Overflow")]
     StackOverflow,
+    #[error("Stack Underflow")]
+    StackUnderflow,
     #[error("Error loading ROM ")]
     LoadError,
 }
 #[derive(Error, Debug)]
 pub enum OpcodeError {
-    #[error("Unknown Opcode : {0}")]
-    UnknownOpcode(u16),
+    #[error("Unknown Mnemonic : {0}")]
+    UnknownMnemonic(u16),
     #[error("Bad X,Y : {0}")]
     BadXYTail(u16),
 }
