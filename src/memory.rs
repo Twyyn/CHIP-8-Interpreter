@@ -1,4 +1,4 @@
-use crate::memory;
+use crate::{errors::MemoryError, memory};
 
 const RAM_SIZE: usize = 4096;
 const STACK_SIZE: usize = 16;
@@ -32,6 +32,7 @@ const FONTSET: [u8; FONTSET_SIZE] = [
 pub struct Memory {
     pub STACK: [u16; STACK_SIZE],
     pub RAM: [u8; RAM_SIZE],
+    pub ROM: Vec<u8>,
     pub V: [u8; NUM_REGS],
     pub I: u16,
     pub S_TIMER: u8,
@@ -44,6 +45,7 @@ impl Default for Memory {
         Self {
             STACK: [0; STACK_SIZE],
             RAM: [0; RAM_SIZE],
+            ROM: Vec::new(),
             V: [0; NUM_REGS],
             I: 0,
             S_TIMER: 0,
@@ -60,11 +62,20 @@ impl Memory {
         memory.RAM[FONT_BASE_ADDR..FONT_BASE_ADDR + FONTSET_SIZE].copy_from_slice(&FONTSET);
         memory
     }
-    pub fn load(&mut self, rom: &[u8; RAM_SIZE]) {
-        match Some(rom.len()) {
-            Some(length) => self.RAM[START_ADDR..START_ADDR + length].copy_from_slice(rom),
-            _ => {}
-        }
+    pub fn load(&mut self, data: &str) -> Result<(), MemoryError> {
+        use hex;
+        self.ROM = match hex::decode(
+            data.chars()
+                .filter(|c| !c.is_ascii_whitespace())
+                .collect::<String>(),
+        ) {
+            Ok(rom) => {
+                self.RAM[START_ADDR..START_ADDR + rom.len()].copy_from_slice(&rom);
+                rom
+            }
+            Err(_) => return Err(MemoryError::ParseError(String::from(data))),
+        };
+        Ok(())
     }
     pub fn stack_pop(&mut self) -> u16 {
         self.STACK_POINTER -= 1;

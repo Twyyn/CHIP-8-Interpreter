@@ -1,19 +1,17 @@
-use winit::keyboard;
 
-use crate::errors::OpcodeError;
-use crate::keyboard::{KeyState, Keyboard};
-use crate::memory::{FONT_BASE_ADDR, GLYPH_BYTES, Memory};
+use crate::errors::OpcodeError;use crate::memory::{FONT_BASE_ADDR, GLYPH_BYTES, Memory};
 use crate::opcodes::Opcode;
+//use crate::keyboard::Keyboard;
 
-struct CPU {
+pub struct CPU {
     memory: Memory,
-    keyboard: Keyboard,
+    //keyboard: Keyboard,
 }
 impl CPU {
     pub fn new() -> Self {
         Self {
             memory: Memory::new(),
-            keyboard: Keyboard::new(),
+            //keyboard: Keyboard::new(),
         }
     }
     pub fn execute(&mut self, op: u16) -> Result<(), OpcodeError> {
@@ -142,19 +140,21 @@ impl CPU {
             }
             Opcode::SKP_Vx { x } => {
                 /* EX9E - Skip next instruction (PC += 2) if [KEY] == V[x] is pressed */
-                if let Ok(KeyState::PRESSED) =
-                    self.keyboard.get_key_state(self.memory.V[x as usize])
-                {
-                    self.memory.PROGRAM_COUNTER = self.memory.PROGRAM_COUNTER.wrapping_add(2);
-                }
+                // if let Ok(KeyState::PRESSED) =
+                //     self.keyboard.get_key_state(self.memory.V[x as usize])
+                // {
+                //     self.memory.PROGRAM_COUNTER = self.memory.PROGRAM_COUNTER.wrapping_add(2);
+                // }
+                todo!()
             }
             Opcode::SKNP_Vx { x } => {
                 /* EXA1 - Skip next instruction (PC += 2) if [KEY] == V[x] is NOT pressed */
-                if let Ok(KeyState::NOTPRESSED) =
-                    self.keyboard.get_key_state(self.memory.V[x as usize])
-                {
-                    self.memory.PROGRAM_COUNTER = self.memory.PROGRAM_COUNTER.wrapping_add(2);
-                }
+                // if let Ok(KeyState::NOTPRESSED) =
+                //     self.keyboard.get_key_state(self.memory.V[x as usize])
+                // {
+                //     self.memory.PROGRAM_COUNTER = self.memory.PROGRAM_COUNTER.wrapping_add(2);
+                // }
+                todo!()
             }
             Opcode::LOAD_Vx_DT { x } => {
                 /* FX07 - Load, V[x] = [DELAY_TIMER] */
@@ -162,8 +162,9 @@ impl CPU {
             }
             Opcode::LOAD_Vx_K { x } => {
                 /* FX0A - Wait.. for [KEY] pressed then V[x] = [KEY] */
-                self.keyboard.KEY_WAITING = true;
-                self.memory.V[x as usize] = 
+                // self.keyboard.KEY_WAITING = true;
+                // self.memory.V[x as usize] =
+                todo!()
             }
             Opcode::LOAD_DT_Vx { x } => {
                 /* FX15 - Load, [DELAY_TIMER] = V[x] */

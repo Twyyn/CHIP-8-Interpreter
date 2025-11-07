@@ -10,6 +10,8 @@ pub enum MemoryError {
     MemoryWriteError { addr: u16, value: u8 },
     #[error("Stack Overflow")]
     StackOverflow,
+    #[error("Error parsing program: {0} ")]
+    ParseError(String)
 }
 #[derive(Error, Debug)]
 pub enum OpcodeError {
