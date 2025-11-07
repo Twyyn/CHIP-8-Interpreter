@@ -1,7 +1,9 @@
+use crate::memory;
+
 const RAM_SIZE: usize = 4096;
 const STACK_SIZE: usize = 16;
 const NUM_REGS: usize = 16;
-const START_ADDR: u16 = 0x200;
+const START_ADDR: usize = 0x200;
 const FONTSET_SIZE: usize = 80;
 pub const FONT_BASE_ADDR: usize = 0x050;
 pub const GLYPH_BYTES: usize = 5;
@@ -37,21 +39,32 @@ pub struct Memory {
     pub PROGRAM_COUNTER: u16,
     pub STACK_POINTER: u8,
 }
-impl Memory {
-    pub fn new() -> Self {
-        let mut memory = Self {
+impl Default for Memory {
+    fn default() -> Self {
+        Self {
             STACK: [0; STACK_SIZE],
             RAM: [0; RAM_SIZE],
             V: [0; NUM_REGS],
             I: 0,
             S_TIMER: 0,
             D_TIMER: 0,
-            PROGRAM_COUNTER: START_ADDR,
+            PROGRAM_COUNTER: START_ADDR as u16,
             STACK_POINTER: 0,
-        };
+        }
+    }
+}
+impl Memory {
+    pub fn new() -> Self {
+        let mut memory = Self::default();
         // Load FONT in RAM
-        memory.RAM[..FONTSET_SIZE].copy_from_slice(&FONTSET);
+        memory.RAM[FONT_BASE_ADDR..FONT_BASE_ADDR + FONTSET_SIZE].copy_from_slice(&FONTSET);
         memory
+    }
+    pub fn load(&mut self, rom: &[u8; RAM_SIZE]) {
+        match Some(rom.len()) {
+            Some(length) => self.RAM[START_ADDR..START_ADDR + length].copy_from_slice(rom),
+            _ => {}
+        }
     }
     pub fn stack_pop(&mut self) -> u16 {
         self.STACK_POINTER -= 1;

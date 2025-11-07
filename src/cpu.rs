@@ -1,19 +1,19 @@
-use core::borrow;
-
-use rand::random_range;
+use winit::keyboard;
 
 use crate::errors::OpcodeError;
-use crate::keyboard::Keyboard;
+use crate::keyboard::{KeyState, Keyboard};
 use crate::memory::{FONT_BASE_ADDR, GLYPH_BYTES, Memory};
 use crate::opcodes::Opcode;
 
 struct CPU {
     memory: Memory,
+    keyboard: Keyboard,
 }
 impl CPU {
     pub fn new() -> Self {
         Self {
             memory: Memory::new(),
+            keyboard: Keyboard::new(),
         }
     }
     pub fn execute(&mut self, op: u16) -> Result<(), OpcodeError> {
@@ -93,8 +93,12 @@ impl CPU {
             }
             Opcode::SHR_Vx_Vy { x, y } => {
                 /* 8XY6 - V[x] = V[x] >> (Shift Right) 1, then V[0xF] = LSB */
-                self.memory.V[0xF] = self.memory.V[y as usize] & 0x1;
-                self.memory.V[x as usize] = self.memory.V[y as usize] >> 1;
+                let (result, carry) = (
+                    self.memory.V[y as usize] & 0x1,
+                    self.memory.V[y as usize] >> 1,
+                );
+                self.memory.V[x as usize] = result;
+                self.memory.V[0xF] = carry;
             }
             Opcode::SUBN_Vx_Vy { x, y } => {
                 /* 8XY7 - V[x] = V[y] - V[x](differnce), then V[0xF] = (NOT)!borrow */
@@ -105,11 +109,15 @@ impl CPU {
             }
             Opcode::SHL_Vx_Vy { x, y } => {
                 /* 8XYE -  V[x] = V[x] << (Shift Left) 1, then V[0xF] = MSB */
-                self.memory.V[0xF] = (self.memory.V[y as usize] << (u8::BITS - 1)) & 1;
-                self.memory.V[x as usize] = self.memory.V[y as usize] >> 1;
+                let (result, carry) = (
+                    (self.memory.V[y as usize] >> 7) & 0x01,
+                    self.memory.V[y as usize] << 1,
+                );
+                self.memory.V[x as usize] = result;
+                self.memory.V[0xF] = carry;
             }
             Opcode::SNE_Vx_Vy { x, y } => {
-                /* 9XY0 - Skip next instruction (PC += 2) if V[x] (NOT) != V[y]*/
+                /* 9XY0 - Skip next instruction (PC += 2) if V[x] (NOT) != V[y] */
                 if self.memory.V[x as usize] != self.memory.V[y as usize] {
                     self.memory.PROGRAM_COUNTER += 2;
                 }
@@ -134,10 +142,19 @@ impl CPU {
             }
             Opcode::SKP_Vx { x } => {
                 /* EX9E - Skip next instruction (PC += 2) if [KEY] == V[x] is pressed */
-                todo!()
+                if let Ok(KeyState::PRESSED) =
+                    self.keyboard.get_key_state(self.memory.V[x as usize])
+                {
+                    self.memory.PROGRAM_COUNTER = self.memory.PROGRAM_COUNTER.wrapping_add(2);
+                }
             }
             Opcode::SKNP_Vx { x } => {
                 /* EXA1 - Skip next instruction (PC += 2) if [KEY] == V[x] is NOT pressed */
+                if let Ok(KeyState::NOTPRESSED) =
+                    self.keyboard.get_key_state(self.memory.V[x as usize])
+                {
+                    self.memory.PROGRAM_COUNTER = self.memory.PROGRAM_COUNTER.wrapping_add(2);
+                }
             }
             Opcode::LOAD_Vx_DT { x } => {
                 /* FX07 - Load, V[x] = [DELAY_TIMER] */
@@ -145,7 +162,8 @@ impl CPU {
             }
             Opcode::LOAD_Vx_K { x } => {
                 /* FX0A - Wait.. for [KEY] pressed then V[x] = [KEY] */
-                todo!()
+                self.keyboard.KEY_WAITING = true;
+                self.memory.V[x as usize] = 
             }
             Opcode::LOAD_DT_Vx { x } => {
                 /* FX15 - Load, [DELAY_TIMER] = V[x] */
@@ -175,16 +193,14 @@ impl CPU {
             }
             Opcode::LOAD_I_Vx { x } => {
                 /* FX55 - RAM[I] .. RAM[Ix] = V[0x0] .. V[x] */
-                for idx in 0..=x {
-                    self.memory.RAM[self.memory.I as usize + idx as usize] =
-                        self.memory.V[x as usize + idx as usize];
+                for idx in 0..=x as usize {
+                    self.memory.RAM[self.memory.I as usize + idx] = self.memory.V[idx];
                 }
             }
             Opcode::LOAD_Vx_I { x } => {
                 /* FX65 - V[0x0] .. V[x] = RAM[I] .. RAM[Ix] */
-                for idx in 0..=x {
-                    self.memory.V[x as usize + idx as usize] =
-                        self.memory.RAM[self.memory.I as usize + idx as usize];
+                for idx in 0..=x as usize {
+                    self.memory.V[idx] = self.memory.RAM[self.memory.I as usize + idx];
                 }
             }
             Opcode::OpCodeError { op } => {

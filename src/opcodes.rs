@@ -100,7 +100,7 @@ impl TryFrom<u16> for Opcode {
             (0x7, _, _, _) => Opcode::ADD_Vx_NN { x, nn },
             (0x8, _, _, 0x0) => Opcode::LOAD_Vx_Vy { x, y },
             (0x8, _, _, 0x1) => Opcode::OR_Vx_Vy { x, y },
-            (0x8, _, _, 0x2) => Opcode::OR_Vx_Vy { x, y },
+            (0x8, _, _, 0x2) => Opcode::AND_Vx_Vy { x, y },
             (0x8, _, _, 0x3) => Opcode::XOR_Vx_Vy { x, y },
             (0x8, _, _, 0x4) => Opcode::ADD_Vx_Vy { x, y },
             (0x8, _, _, 0x5) => Opcode::SUB_Vx_Vy { x, y },
