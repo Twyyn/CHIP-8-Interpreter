@@ -1,4 +1,4 @@
-use crate::{errors::MemoryError, memory};
+use crate::core::MemoryError;
 
 const RAM_SIZE: usize = 4096;
 const STACK_SIZE: usize = 16;
@@ -62,18 +62,14 @@ impl Memory {
         memory.RAM[FONT_BASE_ADDR..FONT_BASE_ADDR + FONTSET_SIZE].copy_from_slice(&FONTSET);
         memory
     }
-    pub fn load(&mut self, data: &str) -> Result<(), MemoryError> {
+    pub fn load_rom(&mut self, data: &[u8]) -> Result<(), MemoryError> {
         use hex;
-        self.ROM = match hex::decode(
-            data.chars()
-                .filter(|c| !c.is_ascii_whitespace())
-                .collect::<String>(),
-        ) {
+        self.ROM = match hex::decode(data) {
             Ok(rom) => {
                 self.RAM[START_ADDR..START_ADDR + rom.len()].copy_from_slice(&rom);
                 rom
             }
-            Err(_) => return Err(MemoryError::ParseError(String::from(data))),
+            Err(_) => return Err(MemoryError::LoadError),
         };
         Ok(())
     }

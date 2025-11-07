@@ -1,4 +1,4 @@
-use crate::errors::OpcodeError;
+use crate::core::OpcodeError;
 
 #[allow(non_camel_case_types)]
 pub enum Opcode {

@@ -1,7 +1,5 @@
 use winit::event::{ElementState, KeyEvent};
 use winit::keyboard::{KeyCode, PhysicalKey};
-
-use crate::errors::KeyboardError;
 pub const NUM_KEYS: usize = 16;
 
 pub enum KeyState {

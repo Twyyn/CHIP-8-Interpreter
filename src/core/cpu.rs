@@ -1,21 +1,27 @@
-
-use crate::errors::OpcodeError;use crate::memory::{FONT_BASE_ADDR, GLYPH_BYTES, Memory};
-use crate::opcodes::Opcode;
+use crate::core::errors::OpcodeError;
+use crate::core::memory::{self, FONT_BASE_ADDR, GLYPH_BYTES, Memory};
+use crate::core::opcodes::Opcode;
 //use crate::keyboard::Keyboard;
 
+#[allow(non_snake_case)]
+#[derive(Debug)]
 pub struct CPU {
     memory: Memory,
-    //keyboard: Keyboard,
 }
 impl CPU {
-    pub fn new() -> Self {
-        Self {
-            memory: Memory::new(),
-            //keyboard: Keyboard::new(),
-        }
+    pub fn new(memory: Memory) -> Self {
+        Self { memory }
     }
-    pub fn execute(&mut self, op: u16) -> Result<(), OpcodeError> {
-        let instr = match Opcode::try_from(op).unwrap() {
+    pub fn fetch(&self) -> u16 {
+        let opcode = u16::from(
+            (self.memory.RAM[self.memory.PROGRAM_COUNTER as usize] << 8)
+                | self.memory.RAM[self.memory.PROGRAM_COUNTER as usize + 1],
+        );
+
+        opcode
+    }
+    pub fn execute(&mut self, opcode: u16) -> Result<(), OpcodeError> {
+        let _ = match Opcode::try_from(opcode).unwrap() {
             /* 00E0 - Clear the Display  */
             Opcode::CLEAR => {
                 todo!()

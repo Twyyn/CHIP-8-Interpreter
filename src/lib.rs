@@ -1,6 +1,10 @@
-//pub mod display;
-pub mod errors;
-//pub mod keyboard;
-pub mod cpu;
-pub mod memory;
-pub mod opcodes;
+use crate::core::CPU;
+
+pub mod core;
+
+#[allow(non_snake_case)]
+#[derive(Debug)]
+pub struct CHIP8 {
+    CPU: core::CPU,
+}
+
