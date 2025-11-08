@@ -1,1 +1,35 @@
+# ---- Rust build output ----
 /target/
+**/target/           # if you have nested crates outside a workspace
+
+# Debug/Release dirs some tools emit (optional)
+debug/
+release/
+
+# ---- Cargo lockfile rules ----
+# Apps/Binaries: KEEP Cargo.lock (commit it)
+# Libraries: you can ignore it to avoid accidental commits:
+# Cargo.lock
+
+# ---- Coverage & profiling (optional) ----
+*.profraw
+*.profdata
+*.gcno
+*.gcda
+coverage/
+
+# ---- Editor/IDE noise (optional) ----
+.vscode/
+.idea/
+*.iml
+*.code-workspace
+
+# ---- OS cruft (optional) ----
+.DS_Store
+Thumbs.db
+
+# ---- Misc (optional) ----
+*.log
+*.swp
+*.swo
+*~
