@@ -1,5 +1,3 @@
-use winit::event::{ElementState, KeyEvent};
-use winit::keyboard::{KeyCode, PhysicalKey};
 pub const NUM_KEYS: usize = 16;
 
 pub enum KeyState {

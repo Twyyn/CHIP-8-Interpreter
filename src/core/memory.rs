@@ -1,9 +1,10 @@
-use crate::core::{MemoryError, OpcodeError};
+use crate::core::MemoryError;
+use crate::core::START_ADDR;
 
 const RAM_SIZE: usize = 4096;
 const STACK_SIZE: usize = 16;
-const NUM_REGS: usize = 16;
-const START_ADDR: usize = 0x200;
+// const NUM_REGS: usize = 16;
+// const START_ADDR: usize = 0x200;
 const FONTSET_SIZE: usize = 80;
 pub const FONT_BASE_ADDR: usize = 0x050;
 pub const GLYPH_BYTES: usize = 5;
@@ -32,26 +33,12 @@ const FONTSET: [u8; FONTSET_SIZE] = [
 pub struct Memory {
     pub STACK: [u16; STACK_SIZE],
     pub RAM: [u8; RAM_SIZE],
-    pub ROM: Vec<u8>,
-    pub V: [u8; NUM_REGS],
-    pub I: u16,
-    pub S_TIMER: u8,
-    pub D_TIMER: u8,
-    pub PROGRAM_COUNTER: u16,
-    pub STACK_POINTER: u8,
 }
 impl Default for Memory {
     fn default() -> Self {
         Self {
             STACK: [0; STACK_SIZE],
             RAM: [0; RAM_SIZE],
-            ROM: Vec::new(),
-            V: [0; NUM_REGS],
-            I: 0,
-            S_TIMER: 0,
-            D_TIMER: 0,
-            PROGRAM_COUNTER: START_ADDR as u16,
-            STACK_POINTER: 0,
         }
     }
 }
@@ -64,7 +51,7 @@ impl Memory {
     }
     pub fn load_rom(&mut self, data: &[u8]) -> Result<(), MemoryError> {
         use hex;
-        self.ROM = match hex::decode(data) {
+        match hex::decode(data) {
             Ok(rom) => {
                 self.RAM[START_ADDR..START_ADDR + rom.len()].copy_from_slice(&rom);
                 rom
@@ -73,20 +60,20 @@ impl Memory {
         };
         Ok(())
     }
-    pub fn stack_pop(&mut self) -> Result<u16, MemoryError> {
-        if self.STACK_POINTER - 1 < 0 {
-            return Err(MemoryError::StackUnderflow);
-        }
-        self.STACK_POINTER -= 1;
-        Ok(self.STACK[self.STACK_POINTER as usize])
-    }
-    pub fn stack_push(&mut self, value: u16) -> Result<(), MemoryError> {
-        if self.STACK_POINTER + 1 <= STACK_SIZE as u8 {
-            self.STACK_POINTER += 1;
-            self.STACK[self.STACK_POINTER as usize] = value;
-        } else {
-            return Err(MemoryError::StackOverflow);
-        }
-        Ok(())
+    // pub fn stack_pop(&mut self) -> Result<u16, MemoryError> {
+    //     if self.STACK_POINTER - 1 < 0 {
+    //         return Err(MemoryError::StackUnderflow);
+    //     }
+    //     self.STACK_POINTER -= 1;
+    //     Ok(self.STACK[self.STACK_POINTER as usize])
+    // }
+    // pub fn stack_push(&mut self, value: u16) -> Result<(), MemoryError> {
+    //     if self.STACK_POINTER + 1 <= STACK_SIZE as u8 {
+    //         self.STACK_POINTER += 1;
+    //         self.STACK[self.STACK_POINTER as usize] = value;
+    //     } else {
+    //         return Err(MemoryError::StackOverflow);
+    //     }
+    //     Ok(())
     }
 }
