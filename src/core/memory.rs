@@ -34,20 +34,13 @@ pub struct Memory {
     pub RAM: [u8; RAM_SIZE],
     pub STACK_POINTER: u8,
 }
-impl Default for Memory {
-    fn default() -> Self {
-        Self {
+
+impl Memory {
+    pub fn new() -> Memory {
+        let mut memory = Memory {
             STACK: [0; STACK_SIZE],
             RAM: [0; RAM_SIZE],
             STACK_POINTER: 0,
-        }
-    }
-}
-impl Memory {
-    pub fn new(stack_pointer: u8) -> Memory {
-        let mut memory = Memory {
-            STACK_POINTER: stack_pointer,
-            ..Memory::default()
         };
         // Load Font in RAM
         memory.RAM[FONT_BASE_ADDR..FONT_BASE_ADDR + FONTSET_SIZE].copy_from_slice(&FONTSET);

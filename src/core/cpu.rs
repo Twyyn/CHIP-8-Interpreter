@@ -1,4 +1,4 @@
-use crate::core::display::Display;
+use crate::core::display::{Display, WINDOW_HEIGHT};
 use crate::core::errors::OpcodeError;
 use crate::core::keyboard::Keyboard;
 use crate::core::memory::{FONT_BASE_ADDR, Memory, START_ADDR};
@@ -10,9 +10,6 @@ const NUM_V_REGS: usize = 16;
 #[allow(non_snake_case)]
 #[derive(Debug)]
 pub struct CPU {
-    memory: Memory,
-    display: Display,
-    keyboard: Keyboard,
     pub V: [u8; NUM_V_REGS],
     pub I: u16,
     pub S_TIMER: u8,
@@ -21,11 +18,8 @@ pub struct CPU {
     pub STACK_POINTER: u8,
 }
 impl CPU {
-    pub fn new(memory: Memory, display: Display, keyboard: Keyboard) -> CPU {
+    pub fn new() -> CPU {
         CPU {
-            memory,
-            display,
-            keyboard,
             V: [0; NUM_V_REGS],
             I: 0,
             S_TIMER: 0,
@@ -34,11 +28,17 @@ impl CPU {
             STACK_POINTER: 0,
         }
     }
-    pub fn fetch(&self) -> u16 {
-        ((self.memory.RAM[self.PROGRAM_COUNTER as usize] as u16) << 8)
-            | (self.memory.RAM[self.PROGRAM_COUNTER as usize + 1] as u16)
+    pub fn fetch(&self, memory: Memory) -> u16 {
+        ((memory.RAM[self.PROGRAM_COUNTER as usize] as u16) << 8)
+            | (memory.RAM[self.PROGRAM_COUNTER as usize + 1] as u16)
     }
-    pub fn execute(&mut self, opcode: u16) -> Result<(), OpcodeError> {
+    pub fn execute(
+        &mut self,
+        mut memory: Memory,
+        mut display: Display,
+        mut keyboard: Keyboard,
+        opcode: u16,
+    ) -> Result<(), OpcodeError> {
         let _ = match Mnemonics::try_from(opcode).unwrap() {
             /* 00E0 - Clear the Display  */
             Mnemonics::CLEAR => {
@@ -46,7 +46,7 @@ impl CPU {
             }
             Mnemonics::RETURN => {
                 /* 00EE - Returns from subroutine. PC = Address popped from STACK */
-                self.PROGRAM_COUNTER = self.memory.stack_pop().unwrap();
+                self.PROGRAM_COUNTER = memory.stack_pop().unwrap();
             }
             Mnemonics::JUMP { nnn } => {
                 /* 1NNN - Jump (goto) address NNN */
@@ -54,7 +54,7 @@ impl CPU {
             }
             Mnemonics::CALL { nnn } => {
                 /* 2NNN - Call subroutine at address NNN. Push current PC Address to STACK, then PC = NNN */
-                self.memory.stack_push(self.PROGRAM_COUNTER).unwrap();
+                memory.stack_push(self.PROGRAM_COUNTER).unwrap();
                 self.PROGRAM_COUNTER = nnn
             }
             Mnemonics::SE_Vx_NN { x, nn } => {
@@ -151,23 +151,37 @@ impl CPU {
             }
             Mnemonics::DRAW { x, y, n } => {
                 /* DRAW -  Display N sprite, starting at [I] at (V[x], V[y]), then V[0xF] = collision */
-                todo!()
+                self.V[0xF] = 0;
+                for row in 0..WINDOW_HEIGHT {
+                    let sprite_byte = memory.RAM[(self.I + row as u16) as usize];
+                    for bit in 0..8 {
+                        let sprite_pixel = (sprite_byte >> (7 - bit)) & 0x1;
+
+                        if sprite_pixel == 0 {
+                            continue;
+                        }
+
+                        let pixel_x = ((self.V[x as usize] + bit) % 64) as usize;
+                        let pixel_y = (self.V[y as usize] + row as u8) % 32;
+                        let idx = (pixel_y as usize) * 64 + pixel_x;
+
+                        if display.pixels[idx] == 1 {
+                            self.V[0xF] = 1;
+                        }
+
+                        display.pixels[idx] ^= 1;
+                    }
+                }
             }
             Mnemonics::SKP_Vx { x } => {
                 /* EX9E - Skip next instruction (PC += 2) if [KEY] == V[x] is pressed */
-                if self
-                    .keyboard
-                    .is_key_down(&self.display, self.V[x as usize] as usize)
-                {
+                if keyboard.is_key_down(&display, self.V[x as usize] as usize) {
                     self.PROGRAM_COUNTER += 2;
                 }
             }
             Mnemonics::SKNP_Vx { x } => {
                 /* EXA1 - Skip next instruction (PC += 2) if [KEY] == V[x] is NOT pressed */
-                if !self
-                    .keyboard
-                    .is_key_down(&self.display, self.V[x as usize] as usize)
-                {
+                if !keyboard.is_key_down(&display, self.V[x as usize] as usize) {
                     self.PROGRAM_COUNTER += 1;
                 }
             }
@@ -200,20 +214,20 @@ impl CPU {
             }
             Mnemonics::LOAD_B_Vx { x } => {
                 /* FX33 - Load, [I], [I + 1] and [I + 2]  = V[x] (as Binary) */
-                self.memory.RAM[self.I as usize] = self.V[x as usize] / 100;
-                self.memory.RAM[self.I as usize + 1] = (self.V[x as usize] / 10) % 10;
-                self.memory.RAM[self.I as usize + 2] = self.V[x as usize] % 10;
+                memory.RAM[self.I as usize] = self.V[x as usize] / 100;
+                memory.RAM[self.I as usize + 1] = (self.V[x as usize] / 10) % 10;
+                memory.RAM[self.I as usize + 2] = self.V[x as usize] % 10;
             }
             Mnemonics::LOAD_I_Vx { x } => {
                 /* FX55 - RAM[I] .. RAM[Ix] = V[0x0] .. V[x] */
                 for idx in 0..=x as usize {
-                    self.memory.RAM[self.I as usize + idx] = self.V[idx];
+                    memory.RAM[self.I as usize + idx] = self.V[idx];
                 }
             }
             Mnemonics::LOAD_Vx_I { x } => {
                 /* FX65 - V[0x0] .. V[x] = RAM[I] .. RAM[Ix] */
                 for idx in 0..=x as usize {
-                    self.V[idx] = self.memory.RAM[self.I as usize + idx];
+                    self.V[idx] = memory.RAM[self.I as usize + idx];
                 }
             }
             Mnemonics::OpCodeError { op } => {
@@ -224,4 +238,5 @@ impl CPU {
         Ok(())
     }
 }
+
 pub fn get_stack_pointer() {}
