@@ -1,5 +1,4 @@
 use thiserror::Error;
-
 #[derive(Error, Debug)]
 pub enum MemoryError {
     #[error("Memory Overflow")]
@@ -24,6 +23,6 @@ pub enum OpcodeError {
 }
 #[derive(Error, Debug)]
 pub enum KeyboardError {
-    #[error("Unknown KEY : {0}")]
-    UnknownKEY(usize),
+    #[error("Unknown Key")]
+    UnknownKey,
 }

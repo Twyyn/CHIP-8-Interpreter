@@ -1,42 +1,49 @@
-use winit::event::{ElementState, KeyEvent};
-use winit::keyboard::{KeyCode, PhysicalKey};
+use crate::{Display, core::KeyboardError};
+use minifb::Key;
 pub const NUM_KEYS: usize = 16;
 
-pub enum KeyState {
-    PRESSED,
-    NOTPRESSED,
+pub const CODE_TO_KEY: [Key; NUM_KEYS] = [
+    Key::Key0,
+    Key::Key1,
+    Key::Key2,
+    Key::Key3,
+    Key::Key4,
+    Key::Key5,
+    Key::Key6,
+    Key::Key7,
+    Key::Key8,
+    Key::Key9,
+    Key::A,
+    Key::B,
+    Key::C,
+    Key::D,
+    Key::E,
+    Key::F,
+];
+
+pub fn from_key(code: usize) -> Result<Key, KeyboardError> {
+    CODE_TO_KEY
+        .get(code)
+        .copied()
+        .ok_or(KeyboardError::UnknownKey)
 }
 
 #[allow(non_snake_case)]
 #[derive(Debug)]
 pub struct Keyboard {
-    pub KEYS: [bool; NUM_KEYS],
+    pub keyboard: [bool; NUM_KEYS],
 }
 impl Default for Keyboard {
-    fn default() -> Self {
+    fn default() -> Keyboard {
         Keyboard {
-            KEYS: [false; NUM_KEYS],
+            keyboard: [false; NUM_KEYS],
         }
     }
 }
 impl Keyboard {
-    pub fn new() -> Self {
-        Self::default()
-    }
-    pub fn press(&mut self, key: u8) {
-        if let Some(b) = self.KEYS.get_mut((key & 0x0F) as usize) {
-            *b = true;
-        }
-    }
-    pub fn release(&mut self, key: u8) {
-        if let Some(slot) = self.KEYS.get_mut((key & 0x0F) as usize) {
-            *slot = false;
-        }
-    }
-    pub fn is_pressed(&self, key: u8) -> bool {
-        self.KEYS
-            .get((key & 0x0F) as usize)
-            .copied()
-            .unwrap_or(false)
+    pub fn is_key_down(&mut self, display: &Display, key: usize) -> bool {
+        let key_ = from_key(key).unwrap();
+        self.keyboard[key] = display.window.is_key_down(key_);
+        self.keyboard[key]
     }
 }
