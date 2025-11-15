@@ -1,10 +1,12 @@
 use crate::core::MemoryError;
 
+/* Public */
+pub const FONT_BASE_ADDR: usize = 0x050;
+pub const START_ADDR: usize = 0x200;
+
 const RAM_SIZE: usize = 4096;
 const STACK_SIZE: usize = 16;
 const FONTSET_SIZE: usize = 80;
-pub const FONT_BASE_ADDR: usize = 0x050;
-pub const START_ADDR: usize = 0x200;
 
 const FONTSET: [u8; FONTSET_SIZE] = [
     0xF0, 0x90, 0x90, 0x90, 0xF0, /* 0 */

@@ -15,12 +15,11 @@ impl Default for Display {
                 WINDOW_WIDTH,
                 WINDOW_HEIGHT,
                 WindowOptions {
-                    // optional: scale it up so you can see the tiny CHIP-8 display
                     scale: Scale::X16,
                     ..WindowOptions::default()
                 },
             )
-            .expect("Failed"),
+            .expect("Failed to create Window"),
         }
     }
 }

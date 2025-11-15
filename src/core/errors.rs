@@ -16,7 +16,7 @@ pub enum MemoryError {
 }
 #[derive(Error, Debug)]
 pub enum OpcodeError {
-    #[error("Unknown Mnemonic : {0}")]
+    #[error("Unknown Mnemonic: {0}")]
     UnknownMnemonic(u16),
     #[error("Bad X,Y : {0}")]
     BadXYTail(u16),

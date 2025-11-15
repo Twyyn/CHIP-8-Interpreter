@@ -76,7 +76,7 @@ impl CPU {
                 }
             }
             Mnemonics::LOAD_Vx_NN { x, nn } => {
-                /* 6XNN - V[x] = NN*/
+                /* 6XNN - V[x] = NN */
                 self.V[x as usize] = nn
             }
             Mnemonics::ADD_Vx_NN { x, nn } => {
