@@ -76,19 +76,16 @@ pub enum Mnemonics {
 impl TryFrom<u16> for Mnemonics {
     type Error = OpcodeError;
     fn try_from(instr: u16) -> Result<Self, Self::Error> {
-        let first_byte = (instr & 0xFF00) >> 8 as u8;
-        let second_byte = (instr & 0x00FF) as u8;
-
-        let op = (first_byte & 0xF0) >> 4 as u8;
-
-        let (x, y, n, nn, nnn) = (
-            (first_byte & 0x0F) as u8,
-            ((second_byte & 0xF0) >> 4) as u8,
-            second_byte & 0x0F,
-            second_byte,
-            (op & 0x0FFF) as u16,
+        let (x, y, n, nn, nnn, op) = (
+            ((instr & 0x0F00) >> 8) as u8,
+            ((instr & 0x00F0) >> 4) as u8,
+            (instr & 0x000F) as u8,
+            (instr & 0x00FF) as u8,
+            instr & 0x0FFF,
+            (instr & 0xF000) >> 12,
         );
-        let op = match (op, x, y, n) {
+
+        let mnemontic = match (op, x, y, n) {
             (0x0, 0x0, 0xE, 0x0) => Mnemonics::CLEAR,
             (0x0, 0x0, 0xE, 0xE) => Mnemonics::RETURN,
             (0x1, _, _, _) => Mnemonics::JUMP { nnn },
@@ -125,6 +122,6 @@ impl TryFrom<u16> for Mnemonics {
             (0xF, _, 0x6, 0x5) => Mnemonics::LOAD_Vx_I { x },
             (_, _, _, _) => return Err(OpcodeError::UnknownMnemonic(instr)),
         };
-        Ok(op)
+        Ok(mnemontic)
     }
 }

@@ -30,17 +30,23 @@ const FONTSET: [u8; FONTSET_SIZE] = [
 #[allow(non_snake_case)]
 #[derive(Debug)]
 pub struct Memory {
-    pub STACK: [u16; STACK_SIZE],
+    pub STACK: Vec<u16>,
     pub RAM: [u8; RAM_SIZE],
-    pub STACK_POINTER: u8,
+}
+impl Default for Memory {
+    fn default() -> Memory {
+        Memory {
+            STACK: Vec::with_capacity(STACK_SIZE),
+            RAM: [0; RAM_SIZE],
+        }
+    }
 }
 
+#[allow(non_snake_case)]
 impl Memory {
     pub fn new() -> Memory {
         let mut memory = Memory {
-            STACK: [0; STACK_SIZE],
-            RAM: [0; RAM_SIZE],
-            STACK_POINTER: 0,
+            ..Default::default()
         };
         // Load Font in RAM
         memory.RAM[FONT_BASE_ADDR..FONT_BASE_ADDR + FONTSET_SIZE].copy_from_slice(&FONTSET);
@@ -58,19 +64,19 @@ impl Memory {
         Ok(())
     }
     pub fn stack_pop(&mut self) -> Result<u16, MemoryError> {
-        if self.STACK_POINTER == 0 {
+        if self.STACK.is_empty() {
             return Err(MemoryError::StackUnderflow);
         }
-        self.STACK_POINTER -= 1;
-        Ok(self.STACK[self.STACK_POINTER as usize])
+        Ok(self.STACK.pop().unwrap())
     }
-    pub fn stack_push(&mut self, value: u16) -> Result<(), MemoryError> {
-        if self.STACK_POINTER + 1 <= STACK_SIZE as u8 {
-            self.STACK_POINTER += 1;
-            self.STACK[self.STACK_POINTER as usize] = value;
-        } else {
+    pub fn stack_push(&mut self, value: u16) -> Result<u8, MemoryError> {
+        if self.STACK.len() >= STACK_SIZE {
             return Err(MemoryError::StackOverflow);
         }
-        Ok(())
+        self.STACK.push(value);
+        Ok(self.STACK.iter().position(|&x| x == value).unwrap() as u8)
+    }
+    pub fn stack_len(&self) -> u8 {
+        self.STACK.len() as u8
     }
 }

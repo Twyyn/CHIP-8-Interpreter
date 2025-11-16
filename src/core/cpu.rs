@@ -1,4 +1,6 @@
-use crate::core::display::{Display, WINDOW_HEIGHT};
+use hex::decode;
+
+use crate::core::display::{Display, WINDOW_HEIGHT, WINDOW_WIDTH};
 use crate::core::errors::OpcodeError;
 use crate::core::keyboard::Keyboard;
 use crate::core::memory::{FONT_BASE_ADDR, Memory, START_ADDR};
@@ -17,8 +19,8 @@ pub struct CPU {
     pub PROGRAM_COUNTER: u16,
     pub STACK_POINTER: u8,
 }
-impl CPU {
-    pub fn new() -> CPU {
+impl Default for CPU {
+    fn default() -> CPU {
         CPU {
             V: [0; NUM_V_REGS],
             I: 0,
@@ -28,25 +30,35 @@ impl CPU {
             STACK_POINTER: 0,
         }
     }
+}
+#[allow(non_snake_case)]
+impl CPU {
+    pub fn new() -> CPU {
+        CPU {
+            ..Default::default()
+        }
+    }
     pub fn fetch(&self, memory: Memory) -> u16 {
         ((memory.RAM[self.PROGRAM_COUNTER as usize] as u16) << 8)
             | (memory.RAM[self.PROGRAM_COUNTER as usize + 1] as u16)
     }
-    pub fn execute(
+    pub fn decode_execute(
         &mut self,
         mut memory: Memory,
         mut display: Display,
         mut keyboard: Keyboard,
-        opcode: u16,
+        instr: u16,
     ) -> Result<(), OpcodeError> {
-        let _ = match Mnemonics::try_from(opcode).unwrap() {
+        /* Decode & Execute */
+        let _ = match Mnemonics::try_from(instr).unwrap() {
             /* 00E0 - Clear the Display  */
             Mnemonics::CLEAR => {
-                todo!()
+                display.clear();
             }
             Mnemonics::RETURN => {
                 /* 00EE - Returns from subroutine. PC = Address popped from STACK */
                 self.PROGRAM_COUNTER = memory.stack_pop().unwrap();
+                self.STACK_POINTER = memory.stack_len() - 1;
             }
             Mnemonics::JUMP { nnn } => {
                 /* 1NNN - Jump (goto) address NNN */
@@ -55,6 +67,7 @@ impl CPU {
             Mnemonics::CALL { nnn } => {
                 /* 2NNN - Call subroutine at address NNN. Push current PC Address to STACK, then PC = NNN */
                 memory.stack_push(self.PROGRAM_COUNTER).unwrap();
+                self.STACK_POINTER = memory.stack_len() + 1;
                 self.PROGRAM_COUNTER = nnn
             }
             Mnemonics::SE_Vx_NN { x, nn } => {
@@ -151,25 +164,27 @@ impl CPU {
             }
             Mnemonics::DRAW { x, y, n } => {
                 /* DRAW -  Display N sprite, starting at [I] at (V[x], V[y]), then V[0xF] = collision */
-                self.V[0xF] = 0;
-                for row in 0..WINDOW_HEIGHT {
-                    let sprite_byte = memory.RAM[(self.I + row as u16) as usize];
+                self.V[0xF] = 0; // Reset collision
+                for row in 0..(n as usize) {
+                    let sprite_byte = memory.RAM[self.I as usize + row];
                     for bit in 0..8 {
-                        let sprite_pixel = (sprite_byte >> (7 - bit)) & 0x1;
-
-                        if sprite_pixel == 0 {
+                        /* Check if current bit of the sprite is set */
+                        let pixel_on = (sprite_byte & (0x80 >> bit)) != 0;
+                        if !pixel_on {
                             continue;
                         }
-
-                        let pixel_x = ((self.V[x as usize] + bit) % 64) as usize;
-                        let pixel_y = (self.V[y as usize] + row as u8) % 32;
-                        let idx = (pixel_y as usize) * 64 + pixel_x;
-
-                        if display.pixels[idx] == 1 {
+                        /* Screen (X and Y) coordinates (idx) */
+                        let idx = (display.get_x_postion(self.V[x as usize] as usize) + bit)
+                            % WINDOW_WIDTH
+                            + (display.get_y_postion(self.V[y as usize] as usize) + row)
+                                % WINDOW_HEIGHT
+                                * WINDOW_WIDTH;
+                        /* If pixel is ON (1), collision detected, set VF = true (1) */
+                        if display.get_pixel(idx) == 1 {
                             self.V[0xF] = 1;
                         }
-
-                        display.pixels[idx] ^= 1;
+                        /* If pixel is ON(1) flip (XOR) to OFF(0) */
+                        display.set_pixels(idx);
                     }
                 }
             }
@@ -191,9 +206,10 @@ impl CPU {
             }
             Mnemonics::LOAD_Vx_K { x } => {
                 /* FX0A - Wait.. for [KEY] pressed then V[x] = [KEY] */
-                // self.keyboard.KEY_WAITING = true;
-                // self.memory.V[x as usize] =
-                todo!()
+                if let Some(key) = keyboard.get_key_pressed(&display) {
+                    self.V[x as usize] = key as u8;
+                    self.PROGRAM_COUNTER += 2;
+                }
             }
             Mnemonics::LOAD_DT_Vx { x } => {
                 /* FX15 - Load, [DELAY_TIMER] = V[x] */
@@ -238,5 +254,3 @@ impl CPU {
         Ok(())
     }
 }
-
-pub fn get_stack_pointer() {}

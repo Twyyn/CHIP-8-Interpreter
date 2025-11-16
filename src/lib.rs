@@ -10,12 +10,19 @@ pub struct CHIP8 {
     keyboard: Keyboard,
 }
 impl CHIP8 {
-    fn default() -> Self {
-        Self {
+    fn new() -> CHIP8 {
+        CHIP8 {
             cpu: CPU::new(),
             memory: Memory::new(),
             display: Display::new(),
-            keyboard: Keyboard::default(),
+            keyboard: Keyboard::new(),
+        }
+    }
+    pub fn run(&mut self) {
+        self.display.window.set_target_fps(60);
+
+        while self.display.window.is_open() {
+            
         }
     }
 }
