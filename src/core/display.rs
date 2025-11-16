@@ -1,9 +1,11 @@
-use std::default;
-
 use minifb::{Scale, Window, WindowOptions};
 
 pub const WINDOW_WIDTH: usize = 64;
 pub const WINDOW_HEIGHT: usize = 32;
+/* Black */
+const COLOR_OFF: u32 = 0x000000;
+/* White */
+const COLOR_ON: u32 = 0xFFFFFF; 
 
 #[derive(Debug)]
 pub struct Display {
@@ -33,6 +35,12 @@ impl Display {
             ..Default::default()
         }
     }
+    pub fn set_target_fps(&mut self) {
+        self.window.set_target_fps(60);
+    }
+    pub fn window_is_open(&self) -> bool {
+        self.window.is_open()
+    }
     pub fn get_x_postion(&self, x: usize) -> usize {
         x % WINDOW_WIDTH
     }
@@ -40,10 +48,14 @@ impl Display {
         y % WINDOW_HEIGHT
     }
     pub fn set_pixels(&mut self, index: usize) {
-        self.pixels[index] ^= 1
+        self.pixels[index] = if self.pixels[index] == COLOR_OFF {
+            COLOR_ON
+        } else {
+            COLOR_OFF
+        }
     }
     pub fn clear(&mut self) {
-        self.pixels = [0; WINDOW_WIDTH * WINDOW_HEIGHT];
+        self.pixels = [COLOR_OFF; WINDOW_WIDTH * WINDOW_HEIGHT];
     }
     pub fn get_pixel(&self, index: usize) -> u32 {
         self.pixels[index]

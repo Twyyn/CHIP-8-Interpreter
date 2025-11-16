@@ -1,6 +1,9 @@
 use std::usize;
 
-use crate::{Display, core::KeyboardError};
+use crate::{
+    Display,
+    core::{KeyboardError, keyboard},
+};
 use minifb::Key;
 
 pub const NUM_KEYS: usize = 16;
@@ -85,6 +88,9 @@ impl Keyboard {
             ..Default::default()
         }
     }
+    pub fn reset(&mut self) {
+        self::Keyboard::default();
+    }
     pub fn is_key_down(&mut self, display: &Display, key: usize) -> bool {
         let key_ = Keypad::from_keypad(key).unwrap();
         let keyboard_key = Keypad::from_key(key_).unwrap();
@@ -95,9 +101,9 @@ impl Keyboard {
     pub fn get_key_pressed(&mut self, display: &Display) -> Option<usize> {
         let key_pressed = display.window.get_keys_pressed(minifb::KeyRepeat::No);
         if let Some(key) = key_pressed.into_iter().next() {
-            if let Ok(keyboard_key) = Keypad::from_key(key) {
-                self.keyboard[keyboard_key] = true;
-                return Some(keyboard_key);
+            let keyboard_key = Keypad::from_key(key);
+            if let Ok(key) = keyboard_key {
+                self.keyboard[key] = true;
             }
         }
         None

@@ -52,15 +52,15 @@ impl Memory {
         memory.RAM[FONT_BASE_ADDR..FONT_BASE_ADDR + FONTSET_SIZE].copy_from_slice(&FONTSET);
         memory
     }
-    pub fn load_rom(&mut self, data: &[u8]) -> Result<(), MemoryError> {
-        use hex;
-        match hex::decode(data) {
-            Ok(rom) => {
-                self.RAM[START_ADDR..START_ADDR + rom.len()].copy_from_slice(&rom);
-                rom
-            }
-            Err(_) => return Err(MemoryError::LoadError),
-        };
+    pub fn reset(&mut self) {
+        self::Memory::default();
+    }
+    pub fn load(&mut self, data: &[u8]) -> Result<(), MemoryError> {
+        let end = START_ADDR + data.len();
+        if end > self.RAM.len() {
+            return Err(MemoryError::LoadError);
+        }
+        self.RAM[START_ADDR..end].copy_from_slice(data);
         Ok(())
     }
     pub fn stack_pop(&mut self) -> Result<u16, MemoryError> {

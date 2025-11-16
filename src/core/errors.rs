@@ -26,3 +26,8 @@ pub enum KeyboardError {
     #[error("Unknown Key")]
     UnknownKey,
 }
+#[derive(Error, Debug)]
+pub enum CycleError {
+    #[error("Emulator Cycle Error")]
+    EmuCycleError,
+}

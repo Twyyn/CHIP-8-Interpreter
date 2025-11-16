@@ -1,13 +1,11 @@
-use chip8::{Display, Keyboard};
+use chip8::CHIP8;
+
 fn main() {
-    let buffer = vec![0xFF000000u32; 64 * 32];
-    let mut win = Display::default();
-    let mut k = Keyboard::default();
-    while win.window.is_open() {
-        k.is_key_down(&win, minifb::Key::A);
-        win.window
-            .update_with_buffer(&buffer, 64, 32)
-            .expect("Failed to update buffer");
-        println!("{:?}", k);
-    }
+    let mut emulator = CHIP8::new();
+    //let path = "src/test_rom/test_opcode.ch8";
+    //let path = "src/test_rom/7-beep.ch8";
+    //let path = "src/test_rom/1-chip8-logo.ch8";
+    let path = "src/test_rom/airplane.ch8";
+    emulator.load(path).unwrap();
+    let _ = emulator.run();
 }

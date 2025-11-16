@@ -1,5 +1,4 @@
-use hex::decode;
-
+use crate::core::Audio;
 use crate::core::display::{Display, WINDOW_HEIGHT, WINDOW_WIDTH};
 use crate::core::errors::OpcodeError;
 use crate::core::keyboard::Keyboard;
@@ -38,27 +37,48 @@ impl CPU {
             ..Default::default()
         }
     }
-    pub fn fetch(&self, memory: Memory) -> u16 {
-        ((memory.RAM[self.PROGRAM_COUNTER as usize] as u16) << 8)
-            | (memory.RAM[self.PROGRAM_COUNTER as usize + 1] as u16)
+    pub fn reset(&mut self) {
+        self::CPU::default();
+    }
+    pub fn update_timers(&mut self, audio: &mut Audio) {
+        if self.D_TIMER > 0 {
+            self.D_TIMER -= 1;
+        }
+        if self.S_TIMER > 0 {
+            if self.S_TIMER == 1 {
+                audio.play_beep()
+            } else {
+                audio.stop_beep()
+            }
+            self.S_TIMER -= 1;
+        }
+    }
+    fn increment_PC(&mut self) {
+        self.PROGRAM_COUNTER += 2
+    }
+    pub fn fetch(&mut self, memory: &Memory) -> u16 {
+        let opcode = ((memory.RAM[self.PROGRAM_COUNTER as usize] as u16) << 8)
+            | (memory.RAM[self.PROGRAM_COUNTER as usize + 1] as u16);
+        self.increment_PC();
+        opcode
     }
     pub fn decode_execute(
         &mut self,
-        mut memory: Memory,
-        mut display: Display,
-        mut keyboard: Keyboard,
+        memory: &mut Memory,
+        display: &mut Display,
+        keyboard: &mut Keyboard,
         instr: u16,
     ) -> Result<(), OpcodeError> {
         /* Decode & Execute */
         let _ = match Mnemonics::try_from(instr).unwrap() {
             /* 00E0 - Clear the Display  */
             Mnemonics::CLEAR => {
-                display.clear();
+                let _ = &display.clear();
             }
             Mnemonics::RETURN => {
                 /* 00EE - Returns from subroutine. PC = Address popped from STACK */
                 self.PROGRAM_COUNTER = memory.stack_pop().unwrap();
-                self.STACK_POINTER = memory.stack_len() - 1;
+                self.STACK_POINTER = memory.stack_len();
             }
             Mnemonics::JUMP { nnn } => {
                 /* 1NNN - Jump (goto) address NNN */
@@ -73,19 +93,19 @@ impl CPU {
             Mnemonics::SE_Vx_NN { x, nn } => {
                 /* 3XNN - Skip next instruction (PC += 2), if V[x] == NN */
                 if self.V[x as usize] == nn {
-                    self.PROGRAM_COUNTER += 2
+                    self.increment_PC();
                 }
             }
             Mnemonics::SNE_Vx_NN { x, nn } => {
                 /* 4XNN - Skip next instruction (PC += 2), if V[x] != NN */
                 if self.V[x as usize] != nn {
-                    self.PROGRAM_COUNTER += 2
+                    self.increment_PC();
                 }
             }
             Mnemonics::SE_Vx_Vy { x, y } => {
                 /* 5XY0 - Skip next instruction (PC += 2), if V[x] != V[Y] */
                 if self.V[x as usize] == self.V[y as usize] {
-                    self.PROGRAM_COUNTER += 2
+                    self.increment_PC();
                 }
             }
             Mnemonics::LOAD_Vx_NN { x, nn } => {
@@ -145,7 +165,7 @@ impl CPU {
             Mnemonics::SNE_Vx_Vy { x, y } => {
                 /* 9XY0 - Skip next instruction (PC += 2) if V[x] (NOT) != V[y] */
                 if self.V[x as usize] != self.V[y as usize] {
-                    self.PROGRAM_COUNTER += 2;
+                    self.increment_PC();
                 }
             }
             Mnemonics::LOAD_I_NNN { nnn } => {
@@ -191,13 +211,13 @@ impl CPU {
             Mnemonics::SKP_Vx { x } => {
                 /* EX9E - Skip next instruction (PC += 2) if [KEY] == V[x] is pressed */
                 if keyboard.is_key_down(&display, self.V[x as usize] as usize) {
-                    self.PROGRAM_COUNTER += 2;
+                    self.increment_PC();
                 }
             }
             Mnemonics::SKNP_Vx { x } => {
                 /* EXA1 - Skip next instruction (PC += 2) if [KEY] == V[x] is NOT pressed */
                 if !keyboard.is_key_down(&display, self.V[x as usize] as usize) {
-                    self.PROGRAM_COUNTER += 1;
+                    self.increment_PC();
                 }
             }
             Mnemonics::LOAD_Vx_DT { x } => {
@@ -208,7 +228,7 @@ impl CPU {
                 /* FX0A - Wait.. for [KEY] pressed then V[x] = [KEY] */
                 if let Some(key) = keyboard.get_key_pressed(&display) {
                     self.V[x as usize] = key as u8;
-                    self.PROGRAM_COUNTER += 2;
+                    self.increment_PC();
                 }
             }
             Mnemonics::LOAD_DT_Vx { x } => {
