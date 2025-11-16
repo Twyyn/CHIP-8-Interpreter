@@ -1,5 +1,5 @@
 pub mod core;
-use crate::core::{Audio, CPU, CycleError, Memory, display::Display, keyboard::Keyboard};
+use crate::core::{Audio, CPU, Memory, display::Display, keyboard::Keyboard};
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
@@ -38,30 +38,36 @@ impl CHIP8 {
         let _ = self.memory.load(&buffer).unwrap();
         Ok(())
     }
-    fn cycle(&mut self) -> Result<(), CycleError> {
-        /* Fetch Instruction*/
-        let instruction = self.cpu.fetch(&self.memory);
-        /*  */
-        /* Decode & Execute Instruction */
-        let decode_execute = self.cpu.decode_execute(
-            &mut self.memory,
-            &mut self.display,
-            &mut self.keyboard,
-            instruction,
-        );
-        decode_execute.map_err(|_| CycleError::EmuCycleError)?;
-        /* Update Sound and Delay Timers */
-        let _ = self.cpu.update_timers(&mut self.audio);
-        Ok(())
+    fn fetch_and_execute(
+        cpu: &mut CPU,
+        memory: &mut Memory,
+        display: &mut Display,
+        keyboard: &mut Keyboard,
+    ) {
+        let instruction = cpu.fetch(memory);
+        let _ = cpu.decode_execute(memory, display, keyboard, instruction);
     }
+
     pub fn run(mut self) {
+        const CPU_CYCLES_PER_FRAME: usize = 12;
+
         while self.display.window_is_open() {
-            /* FPS = 60Hz */
+            /* Limit FPS to 60Hz */
             self.display.set_target_fps();
-            /* 60 Cycles per second  */
-            self.cycle().unwrap();
-            println!("{:?}", self.keyboard);
-            /* Update display with each cycle */
+            /* Poll keyboard input */
+            self.keyboard.update(&self.display);
+            /* CPU cycles */
+            for _ in 0..CPU_CYCLES_PER_FRAME {
+                CHIP8::fetch_and_execute(
+                    &mut self.cpu,
+                    &mut self.memory,
+                    &mut self.display,
+                    &mut self.keyboard,
+                );
+            }
+            /* Update sound and delay timers at 60Hz */
+            self.cpu.update_timers(&mut self.audio);
+            /* Draw and update to window */
             self.display.update();
         }
     }

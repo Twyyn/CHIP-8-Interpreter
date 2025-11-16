@@ -38,19 +38,18 @@ impl CPU {
         }
     }
     pub fn reset(&mut self) {
-        self::CPU::default();
+        *self = CPU::default();
     }
     pub fn update_timers(&mut self, audio: &mut Audio) {
         if self.D_TIMER > 0 {
             self.D_TIMER -= 1;
         }
         if self.S_TIMER > 0 {
-            if self.S_TIMER == 1 {
-                audio.play_beep()
-            } else {
-                audio.stop_beep()
-            }
+            audio.play_beep();
+
             self.S_TIMER -= 1;
+        } else {
+            audio.stop_beep();
         }
     }
     fn increment_PC(&mut self) {
@@ -87,7 +86,7 @@ impl CPU {
             Mnemonics::CALL { nnn } => {
                 /* 2NNN - Call subroutine at address NNN. Push current PC Address to STACK, then PC = NNN */
                 memory.stack_push(self.PROGRAM_COUNTER).unwrap();
-                self.STACK_POINTER = memory.stack_len() + 1;
+                self.STACK_POINTER = memory.stack_len();
                 self.PROGRAM_COUNTER = nnn
             }
             Mnemonics::SE_Vx_NN { x, nn } => {
@@ -146,9 +145,10 @@ impl CPU {
             }
             Mnemonics::SHR_Vx_Vy { x, y } => {
                 /* 8XY6 - V[x] = V[y] >> (Shift Right) 1, then V[0xF] = LSB */
-                let (result, carry) = (self.V[y as usize] & 0x1, self.V[y as usize] >> 1);
-                self.V[x as usize] = result;
-                self.V[0xF] = carry;
+                let value = self.V[y as usize];
+                let lsb = value & 0x1;
+                self.V[x as usize] = value >> 1;
+                self.V[0xF] = lsb;
             }
             Mnemonics::SUBN_Vx_Vy { x, y } => {
                 /* 8XY7 - V[x] = V[y] - V[x](differnce), then V[0xF] = (NOT)!borrow */
@@ -158,9 +158,11 @@ impl CPU {
             }
             Mnemonics::SHL_Vx_Vy { x, y } => {
                 /* 8XYE -  V[x] = V[x] << (Shift Left) 1, then V[0xF] = MSB */
-                let (result, carry) = ((self.V[y as usize] >> 7) & 0x01, self.V[y as usize] << 1);
-                self.V[x as usize] = result;
-                self.V[0xF] = carry;
+                let value = self.V[y as usize];
+                let msb = (value >> 7) & 0x1;
+
+                self.V[x as usize] = value << 1;
+                self.V[0xF] = msb;
             }
             Mnemonics::SNE_Vx_Vy { x, y } => {
                 /* 9XY0 - Skip next instruction (PC += 2) if V[x] (NOT) != V[y] */
@@ -200,7 +202,7 @@ impl CPU {
                                 % WINDOW_HEIGHT
                                 * WINDOW_WIDTH;
                         /* If pixel is ON (1), collision detected, set VF = true (1) */
-                        if display.get_pixel(idx) == 1 {
+                        if display.is_pixel_on(idx) {
                             self.V[0xF] = 1;
                         }
                         /* If pixel is ON(1) flip (XOR) to OFF(0) */
@@ -210,13 +212,13 @@ impl CPU {
             }
             Mnemonics::SKP_Vx { x } => {
                 /* EX9E - Skip next instruction (PC += 2) if [KEY] == V[x] is pressed */
-                if keyboard.is_key_down(&display, self.V[x as usize] as usize) {
+                if keyboard.is_key_down(self.V[x as usize] as usize) {
                     self.increment_PC();
                 }
             }
             Mnemonics::SKNP_Vx { x } => {
                 /* EXA1 - Skip next instruction (PC += 2) if [KEY] == V[x] is NOT pressed */
-                if !keyboard.is_key_down(&display, self.V[x as usize] as usize) {
+                if !keyboard.is_key_down(self.V[x as usize] as usize) {
                     self.increment_PC();
                 }
             }

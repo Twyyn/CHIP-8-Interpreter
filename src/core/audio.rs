@@ -1,30 +1,28 @@
-use rodio::{OutputStream, OutputStreamBuilder, Sink, Source};
-use std::time::Duration;
+use rodio::source::SineWave;
+use rodio::{OutputStream, Sink};
 
-#[allow(non_snake_case)]
 pub struct Audio {
-    stream_handle: OutputStream,
+    _stream_handle: OutputStream,
     sink: Sink,
 }
-#[allow(non_snake_case)]
+
 impl Audio {
-    pub fn new() -> Audio {
-        let stream_handle =
-            OutputStreamBuilder::open_default_stream().expect("Failed to get audio stream");
-        let sink = Sink::connect_new(&stream_handle.mixer());
-        Audio {
-            stream_handle,
+    pub fn new() -> Self {
+        let _stream_handle =
+            rodio::OutputStreamBuilder::open_default_stream().expect("open default audio stream");
+        let sink = rodio::Sink::connect_new(&_stream_handle.mixer());
+
+        Self {
+            _stream_handle,
             sink,
         }
     }
-    pub fn play_beep(&mut self) {
-        self.sink.clear();
-        let source = rodio::source::SineWave::new(400.0)
-            .take_duration(Duration::from_millis(100))
-            .fade_out(Duration::from_millis(10));
-        self.stream_handle.mixer().add(source);
+    pub fn play_beep(&self) {
+        let beep = SineWave::new(440 as f32);
+        self.sink.append(beep);
+        self.sink.play();
     }
     pub fn stop_beep(&self) {
-        self.sink.clear();
+        self.sink.stop();
     }
 }

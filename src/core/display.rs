@@ -3,9 +3,9 @@ use minifb::{Scale, Window, WindowOptions};
 pub const WINDOW_WIDTH: usize = 64;
 pub const WINDOW_HEIGHT: usize = 32;
 /* Black */
-const COLOR_OFF: u32 = 0x000000;
+const PIXEL_OFF: u32 = 0x000000;
 /* White */
-const COLOR_ON: u32 = 0xFFFFFF; 
+const PIXEL_ON: u32 = 0xFFFFFF;
 
 #[derive(Debug)]
 pub struct Display {
@@ -48,14 +48,17 @@ impl Display {
         y % WINDOW_HEIGHT
     }
     pub fn set_pixels(&mut self, index: usize) {
-        self.pixels[index] = if self.pixels[index] == COLOR_OFF {
-            COLOR_ON
+        self.pixels[index] = if self.pixels[index] == PIXEL_OFF {
+            PIXEL_ON
         } else {
-            COLOR_OFF
+            PIXEL_OFF
         }
     }
+    pub fn is_pixel_on(&self, index: usize) -> bool {
+        self.pixels[index] == PIXEL_ON
+    }
     pub fn clear(&mut self) {
-        self.pixels = [COLOR_OFF; WINDOW_WIDTH * WINDOW_HEIGHT];
+        self.pixels = [PIXEL_OFF; WINDOW_WIDTH * WINDOW_HEIGHT];
     }
     pub fn get_pixel(&self, index: usize) -> u32 {
         self.pixels[index]

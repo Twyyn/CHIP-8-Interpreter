@@ -53,14 +53,14 @@ impl Memory {
         memory
     }
     pub fn reset(&mut self) {
-        self::Memory::default();
+        *self = Memory::default();
     }
     pub fn load(&mut self, data: &[u8]) -> Result<(), MemoryError> {
-        let end = START_ADDR + data.len();
-        if end > self.RAM.len() {
+        let data_len = data.len();
+        if START_ADDR + data_len > self.RAM.len() {
             return Err(MemoryError::LoadError);
         }
-        self.RAM[START_ADDR..end].copy_from_slice(data);
+        self.RAM[START_ADDR..START_ADDR + data_len].copy_from_slice(data);
         Ok(())
     }
     pub fn stack_pop(&mut self) -> Result<u16, MemoryError> {
