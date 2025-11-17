@@ -37,8 +37,6 @@ pub const KEYMAP: [(Key, usize); 16] = [
     (Key::C, 0xB),
     (Key::V, 0xF),
 ];
-
-/// Converts minifb key → CHIP-8 key (0x0–0xF)
 pub fn key_to_chip8(key: Key) -> Result<usize, KeyboardError> {
     for (pc_key, chip8_key) in KEYMAP {
         if pc_key == key {
@@ -59,23 +57,17 @@ impl Keyboard {
             keys: [false; NUM_KEYS],
         }
     }
-
     pub fn reset(&mut self) {
         self.keys = [false; NUM_KEYS];
     }
-
-    /// Poll all keys from minifb window
     pub fn update(&mut self, display: &Display) {
         self.keys = [false; NUM_KEYS];
-
         for (pc_key, chip8_key) in KEYMAP {
             if display.window.is_key_down(pc_key) {
                 self.keys[chip8_key] = true;
             }
         }
     }
-
-    /// Used for FX0A: wait for a single key press
     pub fn get_key_pressed(&self, display: &Display) -> Option<usize> {
         for (pc_key, chip8_key) in KEYMAP {
             if display.window.is_key_down(pc_key) {
@@ -84,8 +76,6 @@ impl Keyboard {
         }
         None
     }
-
-    /// Returns true if CHIP-8 key is pressed
     pub fn is_key_down(&self, key: usize) -> bool {
         if key >= NUM_KEYS {
             return false;

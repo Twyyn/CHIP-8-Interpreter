@@ -1,5 +1,7 @@
 pub mod core;
+
 use crate::core::{Audio, CPU, Memory, display::Display, keyboard::Keyboard};
+use std::ffi::OsString;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
@@ -28,7 +30,7 @@ impl CHIP8 {
         self.display.clear();
         self.keyboard.reset();
     }
-    pub fn load(&mut self, path: &str) -> Result<(), std::io::Error> {
+    pub fn load(&mut self, path: &OsString) -> Result<(), std::io::Error> {
         let path = Path::new(path);
         let mut file = File::open(path)?;
 
