@@ -2,75 +2,75 @@ use crate::emulator::OpcodeError;
 
 #[allow(non_camel_case_types)]
 pub enum Mnemonics {
-    //00E0 - Clear Screen
+    /* 00E0 - Clear Screen */
     CLEAR,
-    //00EE - Return from a subroutine
+    /* 00EE - Return from a subroutine */
     RETURN,
-    //1NNN - Jump, PC = NNN
+    /* 1NNN - Jump, PC = NNN */
     JUMP { nnn: u16 },
-    //2NNN - Execute subroutine starting at NNN
+    /* 2NNN - Execute subroutine starting at NNN */
     CALL { nnn: u16 },
-    //3XNN - Skip if RAM[Vx] == NN
+    /* 3XNN - Skip if RAM[Vx] == NN */
     SE_Vx_NN { x: u8, nn: u8 },
-    //4XNN - Skip if RAM[Vx] != NN
+    /* 4XNN - Skip if RAM[Vx] != NN */
     SNE_Vx_NN { x: u8, nn: u8 },
-    //5XY0 - Skip if RAM[Vx] == RAM[Vy]
+    /* 5XY0 - Skip if RAM[Vx] == RAM[Vy] */
     SE_Vx_Vy { x: u8, y: u8 },
-    //6XNN - RAM[Vx] = NN
+    /* 6XNN - RAM[Vx] = NN */
     LOAD_Vx_NN { x: u8, nn: u8 },
-    //7XNN - RAM[Vx] += NN
+    /* 7XNN - RAM[Vx] += NN */
     ADD_Vx_NN { x: u8, nn: u8 },
-    //8XY0 - RAM[Vy] = RAM[Vx]
+    /* 8XY0 - RAM[Vy] = RAM[Vx] */
     LOAD_Vx_Vy { x: u8, y: u8 },
-    //8XY1 - RAM[Vx] = RAM[Vx] OR RAM[Xy]
+    /* 8XY1 - RAM[Vx] = RAM[Vx] OR RAM[Xy] */
     OR_Vx_Vy { x: u8, y: u8 },
-    //8XY2 - RAM[Vx] = RAM[Vx] AND RAM[Xy]
+    /* 8XY2 - RAM[Vx] = RAM[Vx] AND RAM[Xy] */
     AND_Vx_Vy { x: u8, y: u8 },
-    //8XY3 - RAM[Vx] = RAM[Vx] XOR RAM[Xy]
+    /* 8XY3 - RAM[Vx] = RAM[Vx] XOR RAM[Xy] */
     XOR_Vx_Vy { x: u8, y: u8 },
-    //8XY4 - RAM[Vx] += RAM[Xy], Set VF
+    /* 8XY4 - RAM[Vx] += RAM[Xy], Set VF */
     ADD_Vx_Vy { x: u8, y: u8 },
-    //8XY5 - RAM[Vx] -= RAM[Xy], Set VF
+    /* 8XY5 - RAM[Vx] -= RAM[Xy], Set VF */
     SUB_Vx_Vy { x: u8, y: u8 },
-    //8XY6 - Set VF = LSB, RAM[Vx] = RAM[Vy] >> 1
+    /* 8XY6 - Set VF = LSB, RAM[Vx] = RAM[Vy] >> 1 */
     SHR_Vx_Vy { x: u8, y: u8 },
-    //8XY7 - RAM[Vx] = RAM[Vy] - RAM[Vx], Set VF
+    /* 8XY7 - RAM[Vx] = RAM[Vy] - RAM[Vx], Set VF */
     SUBN_Vx_Vy { x: u8, y: u8 },
-    //8XYE - RAM[Vx] = RAM[Vy] << 1, Set VF
+    /* 8XYE - RAM[Vx] = RAM[Vy] << 1, Set VF */
     SHL_Vx_Vy { x: u8, y: u8 },
-    //9XY0 - Skip the following (PC +=2) if RAM[Vx] != RAM[Vy]
+    /* 9XY0 - Skip the following (PC +=2) if RAM[Vx] != RAM[Vy] */
     SNE_Vx_Vy { x: u8, y: u8 },
-    //ANNN - RAM[I] = NNN
+    /* ANNN - RAM[I] = NNN */
     LOAD_I_NNN { nnn: u16 },
-    //BNNN - Jump to NNN + V0
+    /* BNNN - Jump to NNN + V0 */
     JUMP_V0_NNN { nnn: u16 },
-    //CVNN - RAM[Vx] = RandomNum with a mask of NN
+    /* CVNN - RAM[Vx] = RandomNum with a mask of NN */
     RAND { x: u8, nn: u8 },
-    //DXYN - Draw sprite at position Vx, Vy with N bytes, starting at RAM[I], Set VF any pixels changes from 1 -> 0
+    /* DXYN - Draw sprite at position Vx, Vy with N bytes, starting at RAM[I], Set VF any pixels changes from 1 -> 0 */
     DRAW { x: u8, y: u8, n: u8 },
-    //EX9E - Skip following (PC += 2) if KEY(Hex) is already = RAM[Vx]
+    /* EX9E - Skip following (PC += 2) if KEY(Hex) is already = RAM[Vx] */
     SKP_Vx { x: u8 },
-    //EXA1 - Skip following (PC += 2) if KEY(Hex) != Vx
+    /* EXA1 - Skip following (PC += 2) if KEY(Hex) != Vx */
     SKNP_Vx { x: u8 },
-    //FX07 - RAM[Vx] = [DELAY_TIMER]
+    /* FX07 - RAM[Vx] = [DELAY_TIMER] */
     LOAD_Vx_DT { x: u8 },
-    //FX0A - Wait for [KEY]press, RAM[Vx] = [KEY]
+    /* FX0A - Wait for [KEY]press, RAM[Vx] = [KEY] */
     LOAD_Vx_K { x: u8 },
-    //FX15 - [DELAY_TIMER] = RAM[Vx]
+    /* FX15 - [DELAY_TIMER] = RAM[Vx] */
     LOAD_DT_Vx { x: u8 },
-    //FX18 - [SOUND_TIMER] = RAM[Vx]
+    /* FX18 - [SOUND_TIMER] = RAM[Vx] */
     LOAD_ST_Vx { x: u8 },
-    //FX1E - RAM[I] += RAM[Vx]
+    /* FX1E - RAM[I] += RAM[Vx] */
     ADD_I_Vx { x: u8 },
-    //FX29 - [I] =  VxRAM[SPRITE_DATA] ->= RAM[Vx]
+    /* FX29 - [I] =  VxRAM[SPRITE_DATA] ->= RAM[Vx] */
     LOAD_FONT { x: u8 },
-    //FX33 - [I], [I + 1] [I + 2]  = RAM[Vx], Decimal form
+    /* FX33 - [I], [I + 1] [I + 2]  = RAM[Vx], Decimal form */
     LOAD_B_Vx { x: u8 },
-    //FX55 - [I] ..[Ix] = RAM[V0]..RAM[Vx], [I] = I + X + 1
+    /* FX55 - [I] ..[Ix] = RAM[V0]..RAM[Vx], [I] = I + X + 1 */
     LOAD_I_Vx { x: u8 },
-    //FX65 - [V0] .. [Vx] = [I]..[Ix],  [I] = [I] + X + 1
+    /* FX65 - [V0] .. [Vx] = [I]..[Ix],  [I] = [I] + X + 1 */
     LOAD_Vx_I { x: u8 },
-    //Opcode Unknown,
+    /* Opcode Unknown */
     OpCodeError { op: u16 },
 }
 impl TryFrom<u16> for Mnemonics {

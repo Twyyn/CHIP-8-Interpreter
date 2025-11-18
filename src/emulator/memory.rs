@@ -52,17 +52,19 @@ impl Memory {
         memory.RAM[FONT_BASE_ADDR..FONT_BASE_ADDR + FONTSET_SIZE].copy_from_slice(&FONTSET);
         memory
     }
+    #[inline]
     /* Reset memory to default */
     pub fn reset(&mut self) {
         *self = Memory::default();
     }
     /* Load ROM into RAM */
-    pub fn load(&mut self, data: &[u8]) -> Result<(), MemoryError> {
-        let data_len = data.len();
-        if START_ADDR + data_len > self.RAM.len() {
+    pub fn load<R: AsRef<[u8]>>(&mut self, rom: R) -> Result<(), MemoryError> {
+        let rom: &[u8] = rom.as_ref();
+        let rom_len = rom.len();
+        if START_ADDR + rom_len > self.RAM.len() {
             return Err(MemoryError::ROMLoadError);
         }
-        self.RAM[START_ADDR..START_ADDR + data_len].copy_from_slice(data);
+        self.RAM[START_ADDR..START_ADDR + rom_len].copy_from_slice(rom);
         Ok(())
     }
     /* Removes and returns top item from stack */
@@ -80,6 +82,7 @@ impl Memory {
         self.STACK.push(value);
         Ok(self.STACK.iter().position(|&x| x == value).unwrap() as u8)
     }
+    #[inline]
     /* Retuns length of stack */
     pub fn stack_len(&self) -> u8 {
         self.STACK.len() as u8

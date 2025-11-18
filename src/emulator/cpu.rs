@@ -37,6 +37,7 @@ impl CPU {
             ..Default::default()
         }
     }
+    #[inline]
     pub fn reset(&mut self) {
         *self = CPU::default();
     }
@@ -52,6 +53,7 @@ impl CPU {
             audio.stop_beep();
         }
     }
+    #[inline]
     fn increment_PC(&mut self) {
         self.PROGRAM_COUNTER += 2
     }

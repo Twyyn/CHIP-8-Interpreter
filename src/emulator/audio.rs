@@ -21,6 +21,7 @@ impl Audio {
         self.sink.append(beep);
         self.sink.play();
     }
+    #[inline]
     pub fn stop_beep(&self) {
         self.sink.stop();
     }
