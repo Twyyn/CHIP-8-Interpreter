@@ -1,5 +1,4 @@
-use rodio::source::SineWave;
-use rodio::{OutputStream, Sink};
+use rodio::{OutputStream, OutputStreamBuilder, Sink, source::SineWave};
 
 pub struct Audio {
     _stream_handle: OutputStream,
@@ -9,7 +8,7 @@ pub struct Audio {
 impl Audio {
     pub fn new() -> Self {
         let _stream_handle =
-            rodio::OutputStreamBuilder::open_default_stream().expect("open default audio stream");
+            OutputStreamBuilder::open_default_stream().expect("Open Default Audio Stream");
         let sink = rodio::Sink::connect_new(&_stream_handle.mixer());
 
         Self {

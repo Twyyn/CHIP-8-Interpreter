@@ -1,24 +1,25 @@
 use crate::Display;
-use crate::core::KeyboardError;
+use crate::emulator::KeyboardError;
 use minifb::Key;
 
 pub const NUM_KEYS: usize = 16;
+pub const KEY_PRESSED: bool = true;
+pub const KEY_NOT_PRESSED: bool = false;
 
-/// CHIP-8 keypad layout:
-///
-/// 1 2 3 C
-/// 4 5 6 D
-/// 7 8 9 E
-/// A 0 B F
-///
-/// Mapped to PC keyboard:
-///
-/// 1 2 3 4
-/// Q W E R
-/// A S D F
-/// Z X C V
-///
-/// (You can adjust these keys if you prefer)
+/*
+            CHIP-8 keypad layout:
+                1 2 3 C
+                4 5 6 D
+                7 8 9 E
+                A 0 B F
+
+            Mapped to PC keyboard:
+                1 2 3 4
+                Q W E R
+                A S D F
+                Z X C V
+*/
+
 pub const KEYMAP: [(Key, usize); 16] = [
     (Key::Key1, 0x1),
     (Key::Key2, 0x2),
@@ -37,6 +38,7 @@ pub const KEYMAP: [(Key, usize); 16] = [
     (Key::C, 0xB),
     (Key::V, 0xF),
 ];
+/* PC Keyboard Key mapped to CHIP-8 Keypad Key */
 pub fn key_to_chip8(key: Key) -> Result<usize, KeyboardError> {
     for (pc_key, chip8_key) in KEYMAP {
         if pc_key == key {
@@ -47,27 +49,36 @@ pub fn key_to_chip8(key: Key) -> Result<usize, KeyboardError> {
 }
 
 #[derive(Debug)]
-pub struct Keyboard {
+pub struct Keypad {
     pub keys: [bool; NUM_KEYS],
 }
-
-impl Keyboard {
-    pub fn new() -> Self {
+impl Default for Keypad {
+    fn default() -> Self {
         Self {
-            keys: [false; NUM_KEYS],
+            keys: [KEY_NOT_PRESSED; NUM_KEYS],
         }
     }
-    pub fn reset(&mut self) {
-        self.keys = [false; NUM_KEYS];
+}
+impl Keypad {
+    pub fn new() -> Self {
+        Self {
+            ..Default::default()
+        }
     }
+    /* Reset eyboard key state */
+    pub fn reset(&mut self) {
+        *self = Keypad::default();
+    }
+    /* Update keyboard with key state of some key */
     pub fn update(&mut self, display: &Display) {
-        self.keys = [false; NUM_KEYS];
+        self.reset();
         for (pc_key, chip8_key) in KEYMAP {
             if display.window.is_key_down(pc_key) {
-                self.keys[chip8_key] = true;
+                self.keys[chip8_key] = KEY_PRESSED;
             }
         }
     }
+    /* Returns which, if any, key is pressed */
     pub fn get_key_pressed(&self, display: &Display) -> Option<usize> {
         for (pc_key, chip8_key) in KEYMAP {
             if display.window.is_key_down(pc_key) {
@@ -76,10 +87,8 @@ impl Keyboard {
         }
         None
     }
+    /* Returns if key is pressed */
     pub fn is_key_down(&self, key: usize) -> bool {
-        if key >= NUM_KEYS {
-            return false;
-        }
         self.keys[key]
     }
 }

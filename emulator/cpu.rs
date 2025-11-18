@@ -1,9 +1,9 @@
-use crate::core::Audio;
-use crate::core::display::{Display, WINDOW_HEIGHT, WINDOW_WIDTH};
-use crate::core::errors::OpcodeError;
-use crate::core::keyboard::Keyboard;
-use crate::core::memory::{FONT_BASE_ADDR, Memory, START_ADDR};
-use crate::core::mnemonics::Mnemonics;
+use crate::emulator::Audio;
+use crate::emulator::display::{Display, WINDOW_HEIGHT, WINDOW_WIDTH};
+use crate::emulator::errors::OpcodeError;
+use crate::emulator::keyboard::Keypad;
+use crate::emulator::memory::{FONT_BASE_ADDR, Memory, START_ADDR};
+use crate::emulator::mnemonics::Mnemonics;
 
 const GLYPH_BYTES: usize = 5;
 const NUM_V_REGS: usize = 16;
@@ -65,11 +65,12 @@ impl CPU {
         &mut self,
         memory: &mut Memory,
         display: &mut Display,
-        keyboard: &mut Keyboard,
+        keyboard: &mut Keypad,
         instr: u16,
     ) -> Result<(), OpcodeError> {
         /* Decode & Execute */
-        let _ = match Mnemonics::try_from(instr).unwrap() {
+        let mnemonic = Mnemonics::try_from(instr)?;
+        let _ = match mnemonic {
             /* 00E0 - Clear the Display  */
             Mnemonics::CLEAR => {
                 let _ = &display.clear();

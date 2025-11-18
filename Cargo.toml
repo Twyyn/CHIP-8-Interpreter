@@ -3,9 +3,6 @@ name = "chip8"
 version = "0.1.0"
 edition = "2024"
 
-[lib]
-
-
 [dependencies]
 inquire = "0.9.1"
 minifb = "0.28.0"
@@ -13,3 +10,11 @@ rand = "0.9.2"
 rodio = "0.21.1"
 thiserror = "2.0.17"
 walkdir = "2.5.0"
+
+[lib]
+name = "chip8"
+path = "lib.rs"
+
+[[bin]]
+name = "chip8"
+path = "bin/chip8.rs"

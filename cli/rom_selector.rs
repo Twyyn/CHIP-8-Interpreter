@@ -3,20 +3,37 @@ use std::ffi::OsString;
 use walkdir::WalkDir;
 
 #[derive(Debug)]
-pub struct Directory {
+pub struct RomSelector {
     files: Vec<OsString>,
 }
-impl Directory {
-    pub fn new() -> Directory {
-        Directory { files: Vec::new() }
+impl RomSelector {
+    pub fn new() -> RomSelector {
+        RomSelector { files: Vec::new() }
     }
+
     fn walk(&mut self) {
-        for entry in WalkDir::new("test_rom/").into_iter().filter_map(|e| e.ok()) {
+        self.files.clear(); // in case select() is called more than once
+
+        let rom_dir = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("assets/roms");
+
+        for entry in WalkDir::new(&rom_dir)
+            .into_iter()
+            .filter_map(|e| e.ok())
+            .filter(|e| e.file_type().is_file())
+            .filter(|e| e.path().extension().and_then(|s| s.to_str()) == Some("ch8"))
+        {
             self.files.push(entry.path().to_owned().into());
         }
     }
+
     pub fn select(&mut self) -> Option<&OsString> {
         self.walk();
+
+        if self.files.is_empty() {
+            eprintln!("No ROM files found");
+            return None;
+        }
+
         let options: Vec<&str> = self
             .files
             .iter()
@@ -24,7 +41,7 @@ impl Directory {
             .filter_map(|s| s.to_str())
             .collect();
 
-        let ans: Result<&str, InquireError> = Select::new("Select Game", options).prompt();
+        let ans: Result<&str, InquireError> = Select::new("Select/Search: ", options).prompt();
 
         match ans {
             Ok(selected_name) => {
@@ -41,8 +58,8 @@ impl Directory {
                 println!("{:?}", m);
                 Some(m)
             }
-            Err(_) => {
-                println!("There was an error, please try again");
+            Err(e) => {
+                eprintln!("ROM selection failed: {e}");
                 None
             }
         }

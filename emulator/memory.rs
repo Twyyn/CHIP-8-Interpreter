@@ -1,4 +1,4 @@
-use crate::core::MemoryError;
+use crate::emulator::MemoryError;
 
 /* Public */
 pub const FONT_BASE_ADDR: usize = 0x050;
@@ -48,27 +48,31 @@ impl Memory {
         let mut memory = Memory {
             ..Default::default()
         };
-        // Load Font in RAM
+        /* Load Font in RAM */
         memory.RAM[FONT_BASE_ADDR..FONT_BASE_ADDR + FONTSET_SIZE].copy_from_slice(&FONTSET);
         memory
     }
+    /* Reset memory to default */
     pub fn reset(&mut self) {
         *self = Memory::default();
     }
+    /* Load ROM into RAM */
     pub fn load(&mut self, data: &[u8]) -> Result<(), MemoryError> {
         let data_len = data.len();
         if START_ADDR + data_len > self.RAM.len() {
-            return Err(MemoryError::LoadError);
+            return Err(MemoryError::ROMLoadError);
         }
         self.RAM[START_ADDR..START_ADDR + data_len].copy_from_slice(data);
         Ok(())
     }
+    /* Removes and returns top item from stack */
     pub fn stack_pop(&mut self) -> Result<u16, MemoryError> {
         if self.STACK.is_empty() {
             return Err(MemoryError::StackUnderflow);
         }
         Ok(self.STACK.pop().unwrap())
     }
+    /* Adds item to top of stack *if possible*, then returns it's index */
     pub fn stack_push(&mut self, value: u16) -> Result<u8, MemoryError> {
         if self.STACK.len() >= STACK_SIZE {
             return Err(MemoryError::StackOverflow);
@@ -76,6 +80,7 @@ impl Memory {
         self.STACK.push(value);
         Ok(self.STACK.iter().position(|&x| x == value).unwrap() as u8)
     }
+    /* Retuns length of stack */
     pub fn stack_len(&self) -> u8 {
         self.STACK.len() as u8
     }

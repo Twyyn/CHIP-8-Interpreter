@@ -1,4 +1,4 @@
-use crate::core::OpcodeError;
+use crate::emulator::OpcodeError;
 
 #[allow(non_camel_case_types)]
 pub enum Mnemonics {
