@@ -72,6 +72,7 @@ impl CPU {
     ) -> Result<(), OpcodeError> {
         /* Decode & Execute */
         let mnemonic = Mnemonics::try_from(instr)?;
+        println!("{:?}", mnemonic);
         let _ = match mnemonic {
             /* 00E0 - Clear the Display  */
             Mnemonics::CLEAR => {
