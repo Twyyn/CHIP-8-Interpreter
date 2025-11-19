@@ -13,8 +13,8 @@ walkdir = "2.5.0"
 
 [lib]
 name = "chip8"
-path = "lib.rs"
+path = "src/lib.rs"
 
 [[bin]]
 name = "chip8"
-path = "bin/chip8.rs"
+path = "src/bin/chip8.rs"

@@ -65,6 +65,7 @@ impl Keypad {
             ..Default::default()
         }
     }
+    #[inline]
     /* Reset eyboard key state */
     pub fn reset(&mut self) {
         *self = Keypad::default();
@@ -87,6 +88,7 @@ impl Keypad {
         }
         None
     }
+    #[inline]
     /* Returns if key is pressed */
     pub fn is_key_down(&self, key: usize) -> bool {
         self.keys[key]

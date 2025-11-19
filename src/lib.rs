@@ -28,10 +28,10 @@ impl CHIP8 {
         self.display.clear();
         self.keypad.reset();
     }
-    pub fn load<P: AsRef<std::path::Path>>(&mut self, path: P) -> Result<(), EmuError> {
-        let mut file = std::fs::File::open(path)?;
-        let mut buffer = Vec::new();
+    pub fn load<P: AsRef<std::path::Path>>(&mut self, rom: P) -> Result<(), EmuError> {
         use std::io::Read;
+        let mut file = std::fs::File::open(rom)?;
+        let mut buffer = Vec::new();
         file.read_to_end(&mut buffer)?;
         self.memory.load(&buffer)?;
         Ok(())
@@ -42,14 +42,14 @@ impl CHIP8 {
         display: &mut Display,
         keyboard: &mut Keypad,
     ) -> Result<(), EmuError> {
+        /* Fetch and executes instruction from memory */
         let instruction = cpu.fetch(memory);
         cpu.decode_execute(memory, display, keyboard, instruction)?;
         Ok(())
     }
 
-    pub fn run(mut self) -> Result<(), EmuError> {
+    pub fn run(&mut self) -> Result<(), EmuError> {
         const CPU_CYCLES_PER_FRAME: usize = 12;
-
         while self.display.window_is_open() {
             /* Limit FPS to 60Hz */
             self.display.set_target_fps();

@@ -37,18 +37,22 @@ impl Display {
             ..Default::default()
         }
     }
+    #[inline]
     /* Sets display target FPS to 60 */
     pub fn set_target_fps(&mut self) {
         self.window.set_target_fps(60);
     }
+    #[inline]
     /* Returns if window is open */
     pub fn window_is_open(&self) -> bool {
         self.window.is_open()
     }
+    #[inline]
     /* Returns the current postion of x on the display  */
     pub fn get_x_postion(&self, x: usize) -> usize {
         x % WINDOW_WIDTH
     }
+    #[inline]
     /* Returns the current postion of y on the display  */
     pub fn get_y_postion(&self, y: usize) -> usize {
         y % WINDOW_HEIGHT
@@ -61,14 +65,17 @@ impl Display {
             PIXEL_OFF
         }
     }
+    #[inline]
     /* Returns if pixel in pixel buffer is on */
     pub fn is_pixel_on(&self, index: usize) -> bool {
         self.pixels_buffer[index] == PIXEL_ON
     }
+    #[inline]
     /* Clears pixel buffer */
     pub fn clear(&mut self) {
         self.pixels_buffer = [PIXEL_OFF; WINDOW_WIDTH * WINDOW_HEIGHT];
     }
+    #[inline]
     /* Returns pixel at some index */
     pub fn get_pixel(&self, index: usize) -> u32 {
         self.pixels_buffer[index]
